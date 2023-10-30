@@ -4,7 +4,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from './ui/nav
 export function MainNav({ ...props }) {
   return (
     <NavigationMenu {...props}>
-      <NavigationMenuList>
+      <NavigationMenuList className={props.orientation === 'vertical' ? 'flex-col' : ''}>
         <NavigationMenuItem>
           <MainNavLink href="/">Dashboard</MainNavLink>
         </NavigationMenuItem>
