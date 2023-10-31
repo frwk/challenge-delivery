@@ -1,19 +1,19 @@
 'use client';
 
 import { EnumTimeScope } from '@/types/EnumTimeScope';
-import { Delivery } from '@/types/delivery';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import 'dayjs/locale/fr';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { useTheme } from 'next-themes';
+import { Complaint } from '@/types/complaint';
 dayjs.extend(weekOfYear);
 dayjs.extend(isoWeek);
 dayjs.locale('fr');
 
-export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Delivery[]; timeScope: EnumTimeScope }) {
+export function ComplaintsChart({ complaints, timeScope }: { complaints: Complaint[]; timeScope: EnumTimeScope }) {
   const { resolvedTheme } = useTheme();
 
   function createDataObjects(timeScope: EnumTimeScope) {
@@ -24,76 +24,77 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
       case 'day':
         for (let hour = 0; hour < 24; hour++) {
           const label = currentDate.hour(hour).format('HH[h]00');
-          data.push({ label, quantity: 0 });
+          data.push({ label, quantity: 0, resolved: 0 });
         }
         break;
 
       case 'week':
         for (let day = 0; day < 7; day++) {
           const label = currentDate.startOf('week').add(day, 'day').format('dddd');
-          data.push({ label, quantity: 0 });
+          data.push({ label, quantity: 0, resolved: 0 });
         }
         break;
 
       case 'month':
         const weeksInMonth = currentDate.endOf('month').week() - currentDate.startOf('month').week() + 1;
         for (let week = 0; week < weeksInMonth; week++) {
-          const dropoffDate = currentDate.startOf('month').add(week, 'week');
-          const label = `du ${dropoffDate.startOf('week').format('DD/MM')} au ${dropoffDate.endOf('week').format('DD/MM')}`;
-          data.push({ label, quantity: 0 });
+          const createdAt = currentDate.startOf('month').add(week, 'week');
+          const label = `du ${createdAt.startOf('week').format('DD/MM')} au ${createdAt.endOf('week').format('DD/MM')}`;
+          data.push({ label, quantity: 0, resolved: 0 });
         }
         break;
 
       case 'year':
         for (let month = 0; month < 12; month++) {
           const label = currentDate.month(month).format('MMMM');
-          data.push({ label, quantity: 0 });
+          data.push({ label, quantity: 0, resolved: 0 });
         }
         break;
 
       case 'all':
         for (let year = 5; year > 0; year--) {
           const label = currentDate.subtract(year, 'year').format('YYYY');
-          data.push({ label, quantity: 0 });
+          data.push({ label, quantity: 0, resolved: 0 });
         }
         break;
     }
     return data;
   }
 
-  const data = useMemo(() => getData(deliveries, timeScope), [deliveries, timeScope]);
+  const superData = useMemo(() => getData(complaints, timeScope), [complaints, timeScope]);
 
-  function getData(deliveries: Delivery[], timeScope: EnumTimeScope) {
+  function getData(complaints: Complaint[], timeScope: EnumTimeScope) {
     const data = createDataObjects(timeScope);
-    deliveries?.forEach(delivery => {
+    complaints?.forEach(complaint => {
       let dateKey: string;
-      const dropoffDate = dayjs(delivery.dropoffDate);
+      const createdAt = dayjs(complaint.createdAt);
 
       switch (timeScope) {
         case 'day':
-          dateKey = dropoffDate.format('HH[h]00');
+          dateKey = createdAt.format('HH[h]00');
           break;
         case 'week':
-          dateKey = dropoffDate.format('dddd');
+          dateKey = createdAt.format('dddd');
           break;
         case 'month':
-          dateKey = `du ${dropoffDate.startOf('week').format('DD/MM')} au ${dropoffDate.endOf('week').format('DD/MM')}`;
+          dateKey = `du ${createdAt.startOf('week').format('DD/MM')} au ${createdAt.endOf('week').format('DD/MM')}`;
           break;
         case 'year':
-          dateKey = dropoffDate.format('MMMM');
+          dateKey = createdAt.format('MMMM');
           break;
         case 'all':
-          dateKey = dropoffDate.format('YYYY');
+          dateKey = createdAt.format('YYYY');
           break;
         default:
-          dateKey = dropoffDate.format('YYYY-MM-DD');
+          dateKey = createdAt.format('YYYY-MM-DD');
       }
 
       const existingDataItem = data.find(item => item.label === dateKey);
       if (existingDataItem) {
         existingDataItem.quantity += 1;
+        existingDataItem.resolved += complaint.status === 'resolved' ? 1 : 0;
       } else {
-        data.push({ label: dateKey, quantity: 1 });
+        data.push({ label: dateKey, quantity: 1, resolved: complaint.status === 'resolved' ? 1 : 0 });
       }
     });
     return data;
@@ -102,7 +103,7 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
   return (
     <>
       <ResponsiveContainer width="100%" height={350}>
-        <BarChart data={data}>
+        <ComposedChart data={superData}>
           <Tooltip
             wrapperClassName="flex flex-col justify-center items-center rounded shadow-md text-sm"
             contentStyle={
@@ -120,12 +121,13 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
               color: resolvedTheme === 'dark' ? 'hsl(0 0% 95%)' : 'hsl(240 10% 3.9%)',
               fontWeight: '600',
             }}
-            formatter={value => [`${value} livraison${Number(value) > 1 ? 's' : ''}`, null]}
+            formatter={(value, name) => [`${value} ${name === 'resolved' ? 'résolue' : 'réclamation'}${Number(value) > 1 ? 's' : ''}`, null]}
           />
           <XAxis dataKey="label" fontSize={12} tickLine={false} axisLine={false} />
           <YAxis type="number" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
-          <Bar dataKey="quantity" fill="hsl(142.1 70.6% 45.3%)" radius={[4, 4, 0, 0]} />
-        </BarChart>
+          <Line type="monotone" dataKey="quantity" stroke="#ff7300" />
+          <Area type="monotone" dataKey="resolved" fill="hsl(142.1 70.6% 45.3%)" stroke="hsl(142.1 70.6% 45.3%)" />
+        </ComposedChart>
       </ResponsiveContainer>
     </>
   );
