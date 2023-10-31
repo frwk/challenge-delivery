@@ -8,7 +8,7 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
-import { Area, ComposedChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 dayjs.extend(weekOfYear);
 dayjs.extend(isoWeek);
 dayjs.locale('fr');
@@ -124,7 +124,7 @@ export function UsersChart({ users, timeScope }: { users: User[]; timeScope: Enu
           />
           <XAxis dataKey="label" fontSize={12} tickLine={false} axisLine={false} />
           <YAxis type="number" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
-          <Area type="monotone" dataKey="quantity" fill="hsl(142.1 70.6% 45.3%)" stroke="hsl(142.1 70.6% 45.3%)" />
+          <Line type="monotone" dataKey="quantity" fill="hsl(142.1 70.6% 45.3%)" stroke="hsl(142.1 70.6% 45.3%)" />
         </ComposedChart>
       </ResponsiveContainer>
     </>
