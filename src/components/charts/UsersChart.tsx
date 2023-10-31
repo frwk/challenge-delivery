@@ -1,19 +1,19 @@
 'use client';
 
 import { EnumTimeScope } from '@/types/EnumTimeScope';
-import { Delivery } from '@/types/delivery';
+import { User } from '@/types/user';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import 'dayjs/locale/fr';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
 import isoWeek from 'dayjs/plugin/isoWeek';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
 import { useTheme } from 'next-themes';
+import { useMemo } from 'react';
+import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 dayjs.extend(weekOfYear);
 dayjs.extend(isoWeek);
 dayjs.locale('fr');
 
-export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Delivery[]; timeScope: EnumTimeScope }) {
+export function UsersChart({ users, timeScope }: { users: User[]; timeScope: EnumTimeScope }) {
   const { resolvedTheme } = useTheme();
 
   function createDataObjects(timeScope: EnumTimeScope) {
@@ -38,8 +38,8 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
       case 'month':
         const weeksInMonth = currentDate.endOf('month').week() - currentDate.startOf('month').week() + 1;
         for (let week = 0; week < weeksInMonth; week++) {
-          const dropoffDate = currentDate.startOf('month').add(week, 'week');
-          const label = `du ${dropoffDate.startOf('week').format('DD/MM')} au ${dropoffDate.endOf('week').format('DD/MM')}`;
+          const createdAt = currentDate.startOf('month').add(week, 'week');
+          const label = `du ${createdAt.startOf('week').format('DD/MM')} au ${createdAt.endOf('week').format('DD/MM')}`;
           data.push({ label, quantity: 0 });
         }
         break;
@@ -61,32 +61,32 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
     return data;
   }
 
-  const data = useMemo(() => getData(deliveries, timeScope), [deliveries, timeScope]);
+  const superData = useMemo(() => getData(users, timeScope), [users, timeScope]);
 
-  function getData(deliveries: Delivery[], timeScope: EnumTimeScope) {
+  function getData(users: User[], timeScope: EnumTimeScope) {
     const data = createDataObjects(timeScope);
-    deliveries?.forEach(delivery => {
+    users?.forEach(user => {
       let dateKey: string;
-      const dropoffDate = dayjs(delivery.dropoffDate);
+      const createdAt = dayjs(user.createdAt);
 
       switch (timeScope) {
         case 'day':
-          dateKey = dropoffDate.format('HH[h]00');
+          dateKey = createdAt.format('HH[h]00');
           break;
         case 'week':
-          dateKey = dropoffDate.format('dddd');
+          dateKey = createdAt.format('dddd');
           break;
         case 'month':
-          dateKey = `du ${dropoffDate.startOf('week').format('DD/MM')} au ${dropoffDate.endOf('week').format('DD/MM')}`;
+          dateKey = `du ${createdAt.startOf('week').format('DD/MM')} au ${createdAt.endOf('week').format('DD/MM')}`;
           break;
         case 'year':
-          dateKey = dropoffDate.format('MMMM');
+          dateKey = createdAt.format('MMMM');
           break;
         case 'all':
-          dateKey = dropoffDate.format('YYYY');
+          dateKey = createdAt.format('YYYY');
           break;
         default:
-          dateKey = dropoffDate.format('YYYY-MM-DD');
+          dateKey = createdAt.format('YYYY-MM-DD');
       }
 
       const existingDataItem = data.find(item => item.label === dateKey);
@@ -102,7 +102,7 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
   return (
     <>
       <ResponsiveContainer width="100%" height={350}>
-        <BarChart data={data}>
+        <ComposedChart data={superData}>
           <Tooltip
             wrapperClassName="flex flex-col justify-center items-center rounded shadow-md text-sm"
             contentStyle={
@@ -120,12 +120,12 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
               color: resolvedTheme === 'dark' ? 'hsl(0 0% 95%)' : 'hsl(240 10% 3.9%)',
               fontWeight: '600',
             }}
-            formatter={value => [`${value} livraison${Number(value) > 1 ? 's' : ''}`, null]}
+            formatter={value => [`${value} inscription${Number(value) > 1 ? 's' : ''}`, null]}
           />
           <XAxis dataKey="label" fontSize={12} tickLine={false} axisLine={false} />
           <YAxis type="number" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
-          <Bar dataKey="quantity" fill="hsl(142.1 70.6% 45.3%)" radius={[4, 4, 0, 0]} />
-        </BarChart>
+          <Line type="monotone" dataKey="quantity" fill="hsl(142.1 70.6% 45.3%)" stroke="hsl(142.1 70.6% 45.3%)" />
+        </ComposedChart>
       </ResponsiveContainer>
     </>
   );
