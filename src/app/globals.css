@@ -58,4 +58,7 @@
   body {
     @apply bg-background text-foreground;
   }
+  .maplibregl-popup-content {
+    @apply bg-background text-card-foreground !important;
+  }
 }
