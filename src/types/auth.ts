@@ -1,5 +1,5 @@
 import { ResponseError } from './error';
-import { User } from './user';
+import { User, UserAuth } from './user';
 
 export interface LoginDto {
   email: string;
@@ -7,7 +7,7 @@ export interface LoginDto {
 }
 
 export interface AuthContextProps {
-  user: User | null;
+  user: UserAuth | null;
   login: (data: LoginDto) => Promise<LoginResponse>;
   logout: () => void;
   authenticateUser: () => Promise<void>;
@@ -19,7 +19,7 @@ export type LoginResponse = {
 };
 
 export type CheckAuthResponse = {
-  data?: User;
+  data?: UserAuth;
   error?: ResponseError;
 };
 

@@ -3,8 +3,10 @@ import { User } from './user';
 
 export interface Delivery {
   id: number;
-  pickup: string;
-  dropoff: string;
+  pickupLatitude: number;
+  pickupLongitude: number;
+  dropoffLatitude: number;
+  dropoffLongitude: number;
   pickupDate: Date;
   dropoffDate: Date;
   confirmationCode: string;

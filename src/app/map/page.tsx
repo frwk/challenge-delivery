@@ -41,30 +41,32 @@ export default function CouriersMap() {
     };
   }, []);
   return (
-    <div className="container pt-6">
-      <h2 className="text-3xl font-bold tracking-tight mb-4">Carte des livreurs</h2>
-      <Select defaultValue="all" onValueChange={value => setSelectedStatus(value as CourierStatusesEnum)}>
-        <SelectTrigger className="w-[180px] ml-auto mb-4">
-          <SelectValue placeholder="Statut" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Tous</SelectItem>
-          {Object.values(CourierStatusesEnum).map((element, index) => {
-            return (
-              <SelectItem key={index} value={element}>
-                {getStatusLabel(element)}
-              </SelectItem>
-            );
-          })}
-        </SelectContent>
-      </Select>
+    <div className="flex flex-col flex-1 pt-6">
+      <div className="flex items-center">
+        <h2 className="text-3xl font-bold tracking-tight mb-4">Carte des livreurs</h2>
+        <Select defaultValue="all" onValueChange={value => setSelectedStatus(value as CourierStatusesEnum)}>
+          <SelectTrigger className="w-[180px] ml-auto mb-4">
+            <SelectValue placeholder="Statut" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tous</SelectItem>
+            {Object.values(CourierStatusesEnum).map((element, index) => {
+              return (
+                <SelectItem key={index} value={element}>
+                  {getStatusLabel(element)}
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
+      </div>
       <Map
         initialViewState={{
           longitude: 2.3522,
           latitude: 48.8566,
           zoom: 11,
         }}
-        style={{ position: 'relative', height: 600, margin: 'auto' }}
+        style={{ position: 'relative', margin: 'auto' }}
         mapStyle="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
       >
         <FullscreenControl />

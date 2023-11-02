@@ -64,15 +64,14 @@ export default function Home() {
     <div className="flex-1 space-y-4 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-        {timeScope}
       </div>
       <Tabs onValueChange={onTimeScopeChange} defaultValue={EnumTimeScope.DAY}>
         <TabsList>
+          <TabsTrigger value={EnumTimeScope.ALL}>Tout</TabsTrigger>
           <TabsTrigger value={EnumTimeScope.DAY}>Aujourd&apos;hui</TabsTrigger>
           <TabsTrigger value={EnumTimeScope.WEEK}>Semaine</TabsTrigger>
           <TabsTrigger value={EnumTimeScope.MONTH}>Mois</TabsTrigger>
           <TabsTrigger value={EnumTimeScope.YEAR}>Année</TabsTrigger>
-          <TabsTrigger value={EnumTimeScope.ALL}>Tout</TabsTrigger>
         </TabsList>
       </Tabs>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-7">

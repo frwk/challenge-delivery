@@ -61,4 +61,10 @@
   .maplibregl-popup-content {
     @apply bg-background text-card-foreground !important;
   }
+  .rce-mbox {
+    max-width: 70%;
+  }
+  .rce-container-mbox:last-child {
+    margin-bottom: .5rem;
+  }
 }

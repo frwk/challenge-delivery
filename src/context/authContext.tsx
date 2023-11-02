@@ -1,19 +1,19 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import authService from '../services/authService';
-import { User } from '@/types/user';
+import { UserAuth } from '@/types/user';
 import { usePathname, useRouter } from 'next/navigation';
 import { AuthContextProps, CheckAuthResponse, LoginDto, LoginResponse, LogoutResponse } from '@/types/auth';
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserAuth | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
   const isProtectedRoute = pathname !== '/login' && pathname !== '/signup';
 
-  const authenticateUser = async () => {
+  const authenticateUser = useCallback(async () => {
     try {
       const { data, error }: CheckAuthResponse = await authService.checkAuth();
       if (error) throw new Error(error.message);
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         router.push('/login');
       }
     }
-  };
+  }, [pathname, isProtectedRoute, router]);
 
   const login = async (data: LoginDto): Promise<LoginResponse> => {
     const { data: userData, error } = await authService.login(data);
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     authenticateUser();
-  }, []);
+  }, [authenticateUser]);
 
   const contextValue = {
     user,

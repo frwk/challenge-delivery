@@ -15,11 +15,11 @@ export const fontSans = FontSans({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
+      <body className={cn('flex flex-col min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <Header />
-            <div className="mx-auto px-4 pt-6">{children}</div>
+            <div className="flex flex-1 justify-center p-4">{children}</div>
           </ThemeProvider>
         </AuthProvider>
       </body>
