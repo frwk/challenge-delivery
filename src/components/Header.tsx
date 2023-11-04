@@ -3,10 +3,13 @@ import { IconMenu2 } from '@tabler/icons-react';
 import { ThemeToggle } from './ThemeToggle';
 import { UserNav } from './UserNav';
 import { MainNav } from './MainNav';
+import { useAuth } from '@/context/authContext';
 
 export function Header() {
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
 
+  if (!user) return null;
   return (
     <>
       <div className="border-b">

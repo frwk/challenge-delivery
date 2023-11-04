@@ -1,3 +1,4 @@
+import { useAuth } from '@/context/authContext';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import {
@@ -11,6 +12,7 @@ import {
 } from './ui/dropdown-menu';
 
 export function UserNav() {
+  const { logout } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,7 +32,7 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>Profil</DropdownMenuItem>
-          <DropdownMenuItem>Déconnexion</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => logout()}>Déconnexion</DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
