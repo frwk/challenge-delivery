@@ -2,9 +2,10 @@
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/authContext';
+import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconLoader2 } from '@tabler/icons-react';
 import { AlertCircle } from 'lucide-react';
@@ -15,9 +16,14 @@ import * as z from 'zod';
 interface LoginForm extends React.HTMLAttributes<HTMLDivElement> {}
 
 const FormSchema = z.object({
-  email: z.string().email().min(2, {
-    message: "L'email doit faire au moins 2 caractères.",
-  }),
+  email: z
+    .string()
+    .email({
+      message: "L'email n'est pas valide.",
+    })
+    .min(2, {
+      message: "L'email doit faire au moins 2 caractères.",
+    }),
   password: z.string().min(8, {
     message: 'Le mot de passe doit faire au moins 8 caractères.',
   }),
@@ -57,7 +63,7 @@ export function LoginForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-80">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-80">
         {form.formState.errors.root?.message && (
           <Alert className="bg-destructive">
             <AlertCircle className="h-8 w-8" />
@@ -70,11 +76,10 @@ export function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-left block">Email</FormLabel>
-              <FormControl>
-                <Input {...field} />
+              <FormControl className={cn(form.formState.errors.email && 'border-2 border-red-500')}>
+                <Input {...field} placeholder="Email" />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-left text-xs" />
             </FormItem>
           )}
         />
@@ -83,11 +88,10 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mot de passe</FormLabel>
-              <FormControl>
-                <Input type="password" {...field} />
+              <FormControl className={cn(form.formState.errors.password && 'border-2 border-red-500')}>
+                <Input type="password" {...field} placeholder="Mot de passe" />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-left text-xs" />
             </FormItem>
           )}
         />

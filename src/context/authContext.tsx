@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (isProtectedRoute) {
         router.push('/login');
       }
-      console.error('Error authenticating user', error);
     }
   };
 
@@ -43,12 +42,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async (): Promise<void> => {
-    try {
-      const { error }: LogoutResponse = await authService.logout();
-      if (error) throw new Error(error.message);
-    } catch (error) {
-      console.error('Error during logout', error);
-    }
+    const { error }: LogoutResponse = await authService.logout();
+    if (error) throw new Error(error.message);
     setUser(null);
     router.refresh();
   };
