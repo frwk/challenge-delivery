@@ -31,7 +31,6 @@ const FormSchema = z.object({
 
 export function LoginForm() {
   const { login } = useAuth();
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -42,7 +41,6 @@ export function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
-    setIsLoading(true);
     const { data, error } = await login(values);
     if (error) {
       if (error.statusCode === 401) {
@@ -58,7 +56,6 @@ export function LoginForm() {
     if (data) {
       form.reset();
     }
-    setIsLoading(false);
   }
 
   return (
@@ -95,13 +92,13 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        {isLoading ? (
+        {form.formState.isSubmitting ? (
           <Button disabled type="submit">
-            <IconLoader2 className="animate-spin" />
+            <IconLoader2 className="animate-spin" color="#000" />
           </Button>
         ) : (
           <Button type="submit" size="lg">
-            Submit
+            Se connecter
           </Button>
         )}
       </form>
