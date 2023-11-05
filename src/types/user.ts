@@ -10,6 +10,7 @@ export interface User {
   role: RolesEnum;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date;
   deliveries: Delivery[];
 }
 

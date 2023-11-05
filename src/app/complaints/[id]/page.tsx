@@ -12,6 +12,7 @@ import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { Chat } from '../../../components/complaints/chat';
 import { useRouter } from 'next/navigation';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 dayjs.locale('fr');
 
 export default function ComplaintsDetails({ params }: { params: { id: string } }) {
@@ -138,6 +139,27 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                     <div className="space-y-1">
                       Email: <span className="font-bold">{complaintData?.user.email}</span>
                     </div>
+                    <div className="space-y-1 flex flex-1">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Button
+                              variant="link"
+                              onClick={() => router.push(`/clients/${complaintData?.user.id}`)}
+                              className="pl-0"
+                              disabled={complaintData?.user.deletedAt !== null}
+                            >
+                              Voir le client
+                            </Button>
+                          </TooltipTrigger>
+                          {complaintData?.user.deletedAt !== null ? (
+                            <TooltipContent>
+                              <span className="text-gray-300">Ce client a été supprimé.</span>
+                            </TooltipContent>
+                          ) : null}
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -156,6 +178,27 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                     </div>
                     <div className="space-y-1">
                       Email: <span className="font-bold">{complaintData?.delivery.courier.user.email}</span>
+                    </div>
+                    <div className="space-y-1">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Button
+                              variant="link"
+                              onClick={() => router.push(`/clients/${complaintData?.delivery.courier.user.id}`)}
+                              className="pl-0"
+                              disabled={complaintData?.delivery.courier.user.deletedAt !== null}
+                            >
+                              Voir le livreur
+                            </Button>
+                          </TooltipTrigger>
+                          {complaintData?.delivery.courier.user.deletedAt !== null ? (
+                            <TooltipContent>
+                              <span className="text-gray-300">Ce livreur a été supprimé.</span>
+                            </TooltipContent>
+                          ) : null}
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
                   </CardContent>
                 </Card>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import { Complaint as ComplaintColumns, columns } from './columns';
-import { DataTable } from './data-table';
+import { DataTable } from '../data-table';
 import { Complaint } from '@/types/complaint';
 
 export default function Complaints() {
