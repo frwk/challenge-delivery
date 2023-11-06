@@ -47,7 +47,7 @@ export function Actions({ row }: { row: Row<Client> }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => router.push(`/clients/${client.id}`)}>Voir le client</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`/clients/${client.id}`)}>Voir l'utilisateur</DropdownMenuItem>
         {client.deletedAt === null ? <DropdownMenuItem onClick={() => triggerDelete()}>Supprimer le client</DropdownMenuItem> : null}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => navigator.clipboard.writeText(client.id)}>Copier l&apos;ID du client</DropdownMenuItem>
