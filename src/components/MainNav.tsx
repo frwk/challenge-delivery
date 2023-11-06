@@ -15,7 +15,7 @@ export function MainNav({ ...props }) {
           <MainNavLink href="/deliveries">Livraisons</MainNavLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <MainNavLink href="/clients">Clients</MainNavLink>
+          <MainNavLink href="/users">Utilisateurs</MainNavLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <MainNavLink href="/complaints">Réclamations</MainNavLink>

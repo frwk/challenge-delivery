@@ -145,7 +145,7 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                           <TooltipTrigger>
                             <Button
                               variant="link"
-                              onClick={() => router.push(`/clients/${complaintData?.user.id}`)}
+                              onClick={() => router.push(`/users/${complaintData?.user.id}`)}
                               className="pl-0"
                               disabled={complaintData?.user.deletedAt !== null}
                             >
@@ -185,7 +185,7 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                           <TooltipTrigger>
                             <Button
                               variant="link"
-                              onClick={() => router.push(`/clients/${complaintData?.delivery.courier.user.id}`)}
+                              onClick={() => router.push(`/users/${complaintData?.delivery.courier.user.id}`)}
                               className="pl-0"
                               disabled={complaintData?.delivery.courier.user.deletedAt !== null}
                             >

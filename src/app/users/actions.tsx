@@ -12,12 +12,12 @@ import {
 import { Row } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Client } from './client-columns';
+import { User } from './user-columns';
 import { useToast } from '@/components/ui/use-toast';
 import useSWRMutation from 'swr/mutation';
 
-export function Actions({ row }: { row: Row<Client> }) {
-  const client: Client = row.original;
+export function Actions({ row }: { row: Row<User> }) {
+  const user: User = row.original;
   const router = useRouter();
   const { toast } = useToast();
 
@@ -26,12 +26,12 @@ export function Actions({ row }: { row: Row<Client> }) {
       method: 'DELETE',
     });
   }
-  const { trigger: triggerDelete } = useSWRMutation(`${process.env.NEXT_PUBLIC_API_URL}/users/${client.id}`, deleteClient, {
+  const { trigger: triggerDelete } = useSWRMutation(`${process.env.NEXT_PUBLIC_API_URL}/users/${user.id}`, deleteClient, {
     onSuccess: () => {
-      router.push('/clients');
+      router.push('/users');
       toast({
-        title: 'Client supprimé',
-        description: 'Le client a bien été supprimé',
+        title: 'Utilisateur supprimé',
+        description: "L'utilisateur a été supprimé avec succès",
       });
     },
     revalidate: false,
@@ -47,10 +47,10 @@ export function Actions({ row }: { row: Row<Client> }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => router.push(`/clients/${client.id}`)}>Voir l'utilisateur</DropdownMenuItem>
-        {client.deletedAt === null ? <DropdownMenuItem onClick={() => triggerDelete()}>Supprimer le client</DropdownMenuItem> : null}
+        <DropdownMenuItem onClick={() => router.push(`/users/${user.id}`)}>Voir l&apos;utilisateur</DropdownMenuItem>
+        {user.deletedAt === null ? <DropdownMenuItem onClick={() => triggerDelete()}>Supprimer l&apos;utilisateur</DropdownMenuItem> : null}
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(client.id)}>Copier l&apos;ID du client</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(user.id)}>Copier l&apos;ID de l&apos;utilisateur</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

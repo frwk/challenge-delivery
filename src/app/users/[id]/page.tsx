@@ -19,12 +19,12 @@ const formSchema = z.object({
   role: z.enum(['admin', 'support', 'client', 'courier'], { required_error: 'Le rôle est requis' }),
 });
 
-export default function ClientDetails({ params }: { params: { id: string } }) {
+export default function UserDetails({ params }: { params: { id: string } }) {
   const router = useRouter();
   const { toast } = useToast();
-  const { data: clientData } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, (url: string) => fetch(url).then(res => res.json()));
+  const { data: userData } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, (url: string) => fetch(url).then(res => res.json()));
   const form = useForm<z.infer<typeof formSchema>>({
-    values: clientData,
+    values: userData,
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: '',
@@ -35,7 +35,7 @@ export default function ClientDetails({ params }: { params: { id: string } }) {
     },
   });
 
-  async function updateClient(url: string, data: { [key: string]: string }) {
+  async function updateUser(url: string, data: { [key: string]: string }) {
     await fetch(url, {
       method: 'PUT',
       body: JSON.stringify(data.arg),
@@ -44,33 +44,33 @@ export default function ClientDetails({ params }: { params: { id: string } }) {
       },
     });
   }
-  const { trigger: triggerUpdate } = useSWRMutation(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, updateClient, {
+  const { trigger: triggerUpdate } = useSWRMutation(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, updateUser, {
     onSuccess: () => {
       toast({
-        title: 'Client mis à jour',
-        description: 'Les informations du client ont bien été mises à jour',
+        title: 'Utilisateur mis à jour',
+        description: "Les informations de l'utilisateur ont bien été mises à jour",
       });
     },
   });
 
-  async function deleteClient(url: string) {
+  async function deleteUser(url: string) {
     await fetch(url, {
       method: 'DELETE',
     });
   }
-  const { trigger: triggerDelete } = useSWRMutation(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, deleteClient, {
+  const { trigger: triggerDelete } = useSWRMutation(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, deleteUser, {
     onSuccess: () => {
-      router.push('/clients');
+      router.push('/users');
       toast({
-        title: 'Client supprimé',
-        description: 'Le client a bien été supprimé',
+        title: 'Utilisateur supprimé',
+        description: "L'utilisateur a été supprimé avec succès",
       });
     },
     revalidate: false,
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const updatedUser = { ...clientData, ...values };
+    const updatedUser = { ...userData, ...values };
     triggerUpdate(updatedUser);
   };
 
@@ -78,19 +78,19 @@ export default function ClientDetails({ params }: { params: { id: string } }) {
     <div className="flex flex-col flex-1 space-y-4">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">
-          Détails du client <code>#{params.id}</code>
+          Détails de l'utilisateur <code>#{params.id}</code>
         </h2>
-        {clientData?.deletedAt === null ? (
-          <Button variant="destructive" onClick={() => triggerDelete()} disabled={clientData?.deletedAt !== null}>
-            Supprimer le client
+        {userData?.deletedAt === null ? (
+          <Button variant="destructive" onClick={() => triggerDelete()} disabled={userData?.deletedAt !== null}>
+            Supprimer l'utilisateur
           </Button>
         ) : (
-          <Button variant="secondary" onClick={() => triggerDelete()} disabled={clientData?.deletedAt !== null}>
-            Client supprimé
+          <Button variant="secondary" onClick={() => triggerDelete()} disabled={userData?.deletedAt !== null}>
+            Utilisateur supprimé
           </Button>
         )}
       </div>
-      {clientData && (
+      {userData && (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex items-start space-x-10">
@@ -103,7 +103,7 @@ export default function ClientDetails({ params }: { params: { id: string } }) {
                     <FormControl>
                       <Input placeholder="Prénom" {...field} />
                     </FormControl>
-                    <FormDescription>Le prénom du client</FormDescription>
+                    <FormDescription>Le prénom de l&apos;utilisateur</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -117,7 +117,7 @@ export default function ClientDetails({ params }: { params: { id: string } }) {
                     <FormControl>
                       <Input placeholder="Nom" {...field} />
                     </FormControl>
-                    <FormDescription>Le nom du client</FormDescription>
+                    <FormDescription>Le nom de l&apos;utilisateur</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -133,7 +133,7 @@ export default function ClientDetails({ params }: { params: { id: string } }) {
                     <FormControl>
                       <Input placeholder="Email" {...field} />
                     </FormControl>
-                    <FormDescription>L&apos;email du client</FormDescription>
+                    <FormDescription>L&apos;email de l&apos;utilisateur</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -145,7 +145,7 @@ export default function ClientDetails({ params }: { params: { id: string } }) {
                   <FormItem className="flex-1">
                     <FormLabel>Rôle</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={clientData.role}>
+                      <Select onValueChange={field.onChange} value={userData.role}>
                         <SelectTrigger>
                           <SelectValue>{field?.value?.charAt(0).toUpperCase() + field.value?.slice(1)}</SelectValue>
                         </SelectTrigger>
@@ -158,7 +158,7 @@ export default function ClientDetails({ params }: { params: { id: string } }) {
                         </SelectContent>
                       </Select>
                     </FormControl>
-                    <FormDescription>Le rôle du client</FormDescription>
+                    <FormDescription>Le rôle de l&apos;utilisateur</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

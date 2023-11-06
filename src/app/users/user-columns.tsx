@@ -7,7 +7,7 @@ import { ArrowUpDown } from 'lucide-react';
 import { Actions } from './actions';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export type Client = {
+export type User = {
   id: string;
   userFullName: string;
   email: string;
@@ -16,7 +16,7 @@ export type Client = {
   deletedAt: string;
 };
 
-export const columns: ColumnDef<Client>[] = [
+export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
