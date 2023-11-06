@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTable
       <div className="flex items-center">
         <div className="flex flex-1 py-4">
           <Input
-            placeholder="Filter by client name..."
+            placeholder="Filtrer par nom..."
             value={(table.getColumn('userFullName')?.getFilterValue() as string) ?? ''}
             onChange={event => table.getColumn('userFullName')?.setFilterValue(event.target.value)}
             className="max-w-sm"

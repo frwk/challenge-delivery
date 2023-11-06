@@ -7,8 +7,11 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { IconBike } from '@tabler/icons-react';
 import { CourierStatusesEnum, getStatusLabel } from '@/types/CourierStatusesEnum';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export default function CouriersMap() {
+  const router = useRouter();
   const [couriers, setCouriers] = useState<Courier[]>([]);
   const [selectedCourier, setSelectedCourier] = useState<Courier | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<CourierStatusesEnum | 'all'>('all');
@@ -106,6 +109,9 @@ export default function CouriersMap() {
                 {selectedCourier.firstName} {selectedCourier.lastName}
               </span>
               <span>{getStatusLabel(selectedCourier.status)}</span>
+              <Button variant="link" onClick={() => router.push(`/users/${selectedCourier.user.id}`)}>
+                Ouvrir le profil
+              </Button>
             </div>
           </Popup>
         )}
