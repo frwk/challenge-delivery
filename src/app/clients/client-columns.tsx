@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import { ArrowUpDown } from 'lucide-react';
 import { Actions } from './actions';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export type Client = {
   id: string;
@@ -34,14 +35,31 @@ export const columns: ColumnDef<Client>[] = [
   },
   {
     accessorKey: 'role',
-    header: ({ column }) => {
-      return (
+    header: ({ column }) => (
+      <div className="flex">
+        <Select
+          onValueChange={value => {
+            if (value === 'all') value = '';
+            column.setFilterValue(value || undefined);
+          }}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Tous les rôles" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tous les rôles</SelectItem>
+            <SelectItem value="client">Client</SelectItem>
+            <SelectItem value="courier">Livreur</SelectItem>
+            <SelectItem value="admin">Administrateur</SelectItem>
+            <SelectItem value="support">Support</SelectItem>
+          </SelectContent>
+        </Select>
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Rôle
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="h-4 w-4" />
         </Button>
-      );
-    },
+      </div>
+    ),
+    enableColumnFilter: true,
   },
   {
     accessorKey: 'createdAt',
