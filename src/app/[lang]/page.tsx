@@ -1,4 +1,5 @@
 'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DeliveriesChart } from '@/components/charts/DeliveriesChart';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
