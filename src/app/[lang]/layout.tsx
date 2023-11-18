@@ -1,4 +1,3 @@
-'use client';
 import { ReactNode } from 'react';
 import { Header } from '@/components/Header';
 import { ThemeProvider } from '@/components/ThemeProvider';
@@ -7,24 +6,29 @@ import { cn } from '@/lib/utils';
 import { Inter as FontSans } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import { NextIntlClientProvider, useMessages } from 'next-intl';
 
 export const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
 });
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children, params: { lang } }: { children: ReactNode; params: { lang: string } }) {
+  const messages = useMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={cn('flex flex-col min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
-        <AuthProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <Toaster />
-            <Header />
-            <div className="flex flex-1 justify-center p-4">{children}</div>
-          </ThemeProvider>
-        </AuthProvider>
-      </body>
+    <html lang={lang} suppressHydrationWarning>
+      <NextIntlClientProvider locale={lang} messages={messages}>
+        <body className={cn('flex flex-col min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
+          <AuthProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+              {/* <Toaster /> */}
+              <Header />
+              <div className="flex flex-1 justify-center p-4">{children}</div>
+            </ThemeProvider>
+          </AuthProvider>
+        </body>
+      </NextIntlClientProvider>
     </html>
   );
 }
