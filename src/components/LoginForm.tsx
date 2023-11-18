@@ -9,29 +9,30 @@ import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconLoader2 } from '@tabler/icons-react';
 import { AlertCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 interface LoginForm extends React.HTMLAttributes<HTMLDivElement> {}
 
-const FormSchema = z.object({
-  email: z
-    .string()
-    .email({
-      message: "L'email n'est pas valide.",
-    })
-    .min(2, {
-      message: "L'email doit faire au moins 2 caractères.",
-    }),
-  password: z.string().min(8, {
-    message: 'Le mot de passe doit faire au moins 8 caractères.',
-  }),
-});
-
 export function LoginForm() {
   const { login } = useAuth();
+  const t = useTranslations('Login.Form');
 
+  const FormSchema = z.object({
+    email: z
+      .string()
+      .email({
+        message: t('emailInvalid'),
+      })
+      .min(2, {
+        message: t('emailMinLength'),
+      }),
+    password: z.string().min(8, {
+      message: t('passwordMinLength'),
+    }),
+  });
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -45,11 +46,11 @@ export function LoginForm() {
     if (error) {
       if (error.statusCode === 401) {
         form.setError('root', {
-          message: 'Idenfiants incorrects',
+          message: t('incorrectCredentials'),
         });
       } else {
         form.setError('root', {
-          message: 'Erreur inconnue',
+          message: t('unknownError'),
         });
       }
     }
@@ -64,7 +65,7 @@ export function LoginForm() {
         {form.formState.errors.root?.message && (
           <Alert className="bg-destructive">
             <AlertCircle className="h-8 w-8" />
-            <AlertTitle>Erreur</AlertTitle>
+            <AlertTitle>{t('error')}</AlertTitle>
             <AlertDescription>{form.formState.errors.root?.message}</AlertDescription>
           </Alert>
         )}
@@ -74,7 +75,7 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl className={cn(form.formState.errors.email && 'border-2 border-red-500')}>
-                <Input {...field} placeholder="Email" />
+                <Input {...field} placeholder={t('emailPlaceholder')} />
               </FormControl>
               <FormMessage className="text-left text-xs" />
             </FormItem>
@@ -86,7 +87,7 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl className={cn(form.formState.errors.password && 'border-2 border-red-500')}>
-                <Input type="password" {...field} placeholder="Mot de passe" />
+                <Input type="password" {...field} placeholder={t('passwordPlaceholder')} />
               </FormControl>
               <FormMessage className="text-left text-xs" />
             </FormItem>
@@ -98,7 +99,7 @@ export function LoginForm() {
           </Button>
         ) : (
           <Button type="submit" size="lg">
-            Se connecter
+            {t('loginButton')}
           </Button>
         )}
       </form>

@@ -16,5 +16,8 @@ export interface User {
 
 export interface UserAuth {
   id: User['id'];
+  firstName: User['firstName'];
+  lastName: User['lastName'];
+  email: User['email'];
   role: User['role'];
 }

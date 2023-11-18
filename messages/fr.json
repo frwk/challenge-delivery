@@ -1,1 +1,181 @@
-{}
+{
+  "MainNav": {
+    "dashboard": "Dashboard",
+    "map": "Carte",
+    "deliveries": "Livraisons",
+    "users": "Utilisateurs",
+    "complaints": "Réclamations"
+  },
+  "UserNav": {
+    "profile": "Profil",
+    "logout": "Déconnexion"
+  },
+  "ThemeToggle": {
+    "changeTheme": "Changez de thème",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "Système"
+  },
+  "CalendarDateRangePicker": {
+    "chooseDate": "Choisissez une date"
+  },
+  "Home": {
+    "heading": "Tableau de bord",
+    "all": "Tout",
+    "today": "Aujourd'hui",
+    "week": "Semaine",
+    "month": "Mois",
+    "year": "Année",
+    "deliveriesCount": "Nombre de livraisons",
+    "deliveriesDescription": "Total des livraisons accomplies au cours de la période",
+    "deliveriesNotation": "Évaluations des commandes",
+    "deliveriesNotationDescription": "Répartition des notes données par les clients suite à leurs commandes",
+    "complaints": "Réclamations",
+    "newCustomers": "Nouveaux clients"
+  },
+  "Datatable": {
+    "filterByName": "Filtrer par nom...",
+    "columns": "Colonnes",
+    "loading": "Chargement...",
+    "noResults": "Aucun résultat",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "Login": {
+    "title": "Connexion",
+    "description": "Entrez vos identifiants pour accéder à l'espace d'administration",
+    "Form": {
+      "emailInvalid": "L'email est invalide",
+      "emailMinLength": "L'email doit contenir au moins 2 caractères",
+      "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "unknownError": "Une erreur est survenue",
+      "incorrectCredentials": "Les identifiants sont incorrects",
+      "error": "Erreur",
+      "emailPlaceholder": "Email",
+      "passwordPlaceholder": "Mot de passe",
+      "loginButton": "Se connecter"
+    }
+  },
+  "Users": {
+    "pageTitle": "Utilisateurs",
+    "loadingError": "Erreur lors du chargement des données",
+    "Details": {
+      "firstName": {
+        "label": "Prénom",
+        "placeholder": "Prénom",
+        "description": "Le prénom de l'utilisateur",
+        "required": "Le prénom est requis"
+      },
+      "lastName": {
+        "label": "Nom",
+        "placeholder": "Nom",
+        "description": "Le nom de l'utilisateur",
+        "required": "Le nom est requis"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Email",
+        "description": "L'email de l'utilisateur",
+        "invalid": "L'email est invalide"
+      },
+      "role": {
+        "label": "Rôle",
+        "description": "Le rôle de l'utilisateur",
+        "required": "Le rôle est requis",
+        "options": {
+          "admin": "Admin",
+          "support": "Support",
+          "client": "Client",
+          "courier": "Courier"
+        }
+      },
+      "updateSuccessTitle": "Utilisateur mis à jour",
+      "updateSuccessDescription": "Les informations de l'utilisateur ont bien été mises à jour",
+      "deleteSuccessTitle": "Utilisateur supprimé",
+      "deleteSuccessDescription": "L'utilisateur a été supprimé avec succès",
+      "userDetailsTitle": "Détails de l'utilisateur",
+      "deleteUserButton": "Supprimer l'utilisateur",
+      "userDeletedButton": "Utilisateur supprimé",
+      "saveButton": "Enregistrer"
+    },
+    "Actions": {
+      "OpenMenu": "Ouvrir le menu",
+      "ActionsLabel": "Actions",
+      "ViewUser": "Voir l'utilisateur",
+      "DeleteUser": "Supprimer l'utilisateur",
+      "CopyUserID": "Copier l'ID de l'utilisateur",
+      "UserDeletedTitle": "Utilisateur supprimé",
+      "UserDeletedDescription": "L'utilisateur a été supprimé avec succès"
+    }
+  },
+  "Map": {
+    "heading": "Carte des livreurs",
+    "status": "Statut",
+    "all": "Tous",
+    "available": "Disponible",
+    "onDelivery": "En livraison",
+    "unavailable": "Indisponible",
+    "openProfile": "Ouvrir le profil"
+  },
+  "Complaints": {
+    "heading": "Réclamations",
+    "loadingError": "Erreur lors du chargement des données",
+    "Details": {
+      "startConversation": {
+        "title": "Commencer une conversation",
+        "description": "Discutez avec le client pour résoudre le problème."
+      },
+      "resolvedButton": {
+        "label": "Marquer comme résolu"
+      },
+      "pendingStatus": "En attente",
+      "pickedUpStatus": "En cours de livraison",
+      "deliveredStatus": "Livré",
+      "cancelledStatus": "Annulée",
+      "resolvedStatus": "Réclamation résolue",
+      "complaintIdLabel": "Réclamation",
+      "orderTabLabel": "Commande",
+      "customerTabLabel": "Client",
+      "courierTabLabel": "Livreur",
+      "orderInfoTitle": "Information de la commande",
+      "orderInfoDescription": "Informations sur la commande ayant fait l'objet de la réclamation.",
+      "orderNumberLabel": "Numéro de commande",
+      "orderStatusLabel": "Statut de la commande",
+      "pickupAddressLabel": "Adresse de récupération",
+      "deliveryAddressLabel": "Adresse de livraison",
+      "orderedOnLabel": "Commandé le",
+      "deliveredOnLabel": "Livré le",
+      "customerInfoTitle": "Information du client",
+      "customerInfoDescription": "Informations sur le client ayant fait la réclamation.",
+      "customerNameLabel": "Nom",
+      "customerFirstNameLabel": "Prénom",
+      "customerEmailLabel": "Email",
+      "viewCustomerButton": "Voir le client",
+      "deletedCustomerMessage": "Ce client a été supprimé.",
+      "courierInfoTitle": "Information du livreur",
+      "courierInfoDescription": "Informations sur le livreur ayant livré la commande.",
+      "courierNameLabel": "Nom",
+      "courierFirstNameLabel": "Prénom",
+      "courierEmailLabel": "Email",
+      "viewCourierButton": "Voir le livreur",
+      "deletedCourierMessage": "Ce livreur a été supprimé."
+    },
+    "Actions": {
+      "openMenu": "Ouvrir le menu",
+      "actionsLabel": "Actions",
+      "openComplaint": "Ouvrir la réclamation",
+      "markAsResolved": "Marquer comme résolu",
+      "copyComplaintId": "Copier l'ID de la réclamation"
+    },
+    "Chat": {
+      "ConnexionUninitialized": "Connexion non initialisée",
+      "ConnexionEstablishing": "Connexion en cours...",
+      "ConnexionEstablished": "Écrivez votre message...",
+      "ConnexionClosing": "Fermeture de la connexion...",
+      "ConnexionClosed": "Connexion fermée. Veuillez rafraîchir la page...",
+      "UnknownConnectionState": "État de connexion inconnu",
+      "ResolvedComplaintMessage": "La réclamation a été résolue...",
+      "Send": "Envoyer"
+    }
+  }
+}

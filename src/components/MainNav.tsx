@@ -1,24 +1,27 @@
 import MainNavLink from '@/components/MainNavLink';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from './ui/navigation-menu';
+import { useTranslations } from 'next-intl';
 
 export function MainNav({ ...props }) {
+  const t = useTranslations('MainNav');
+
   return (
     <NavigationMenu {...props}>
       <NavigationMenuList className={props.orientation === 'vertical' ? 'flex-col' : ''}>
         <NavigationMenuItem>
-          <MainNavLink href="/">Dashboard</MainNavLink>
+          <MainNavLink href="/">{t('dashboard')}</MainNavLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <MainNavLink href="/map">Carte</MainNavLink>
+          <MainNavLink href="/map">{t('map')}</MainNavLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <MainNavLink href="/deliveries">Livraisons</MainNavLink>
+          <MainNavLink href="/deliveries">{t('deliveries')}</MainNavLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <MainNavLink href="/users">Utilisateurs</MainNavLink>
+          <MainNavLink href="/users">{t('users')}</MainNavLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <MainNavLink href="/complaints">Réclamations</MainNavLink>
+          <MainNavLink href="/complaints">{t('complaints')}</MainNavLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

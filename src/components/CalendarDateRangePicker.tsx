@@ -8,8 +8,10 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Button } from './ui/button';
 import { Calendar } from './ui/calendar';
 import { IconCalendar } from '@tabler/icons-react';
+import { useTranslations } from 'next-intl';
 
 export function CalendarDateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
+  const t = useTranslations('CalendarDateRangePicker');
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(),
     to: new Date(),
@@ -36,7 +38,7 @@ export function CalendarDateRangePicker({ className }: React.HTMLAttributes<HTML
                 format(date.from, 'LLL dd, y')
               )
             ) : (
-              <span>Choisissez une date</span>
+              <span>{t('chooseDate')}</span>
             )}
           </Button>
         </PopoverTrigger>

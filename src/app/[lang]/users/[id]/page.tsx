@@ -6,23 +6,25 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import * as z from 'zod';
 
-const formSchema = z.object({
-  firstName: z.string().min(1, { message: 'Le prénom est requis' }),
-  lastName: z.string().min(1, { message: 'Le nom est requis' }),
-  email: z.string().email({ message: "L'email est invalide" }),
-  role: z.enum(['admin', 'support', 'client', 'courier'], { required_error: 'Le rôle est requis' }),
-});
-
 export default function UserDetails({ params }: { params: { id: string } }) {
+  const t = useTranslations('Users.Details');
   const router = useRouter();
   const { toast } = useToast();
   const { data: userData } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, (url: string) => fetch(url).then(res => res.json()));
+
+  const formSchema = z.object({
+    firstName: z.string().min(1, { message: t('firstName.required') }),
+    lastName: z.string().min(1, { message: t('lastName.required') }),
+    email: z.string().email({ message: t('email.invalid') }),
+    role: z.enum(['admin', 'support', 'client', 'courier'], { required_error: t('role.required') }),
+  });
   const form = useForm<z.infer<typeof formSchema>>({
     values: userData,
     resolver: zodResolver(formSchema),
@@ -46,8 +48,8 @@ export default function UserDetails({ params }: { params: { id: string } }) {
   const { trigger: triggerUpdate } = useSWRMutation(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, updateUser, {
     onSuccess: () => {
       toast({
-        title: 'Utilisateur mis à jour',
-        description: "Les informations de l'utilisateur ont bien été mises à jour",
+        title: t('updateSuccessTitle'),
+        description: t('updateSuccessDescription'),
       });
     },
   });
@@ -61,8 +63,8 @@ export default function UserDetails({ params }: { params: { id: string } }) {
     onSuccess: () => {
       router.push('/users');
       toast({
-        title: 'Utilisateur supprimé',
-        description: "L'utilisateur a été supprimé avec succès",
+        title: t('deleteSuccessTitle'),
+        description: t('deleteSuccessDescription'),
       });
     },
     revalidate: false,
@@ -77,15 +79,15 @@ export default function UserDetails({ params }: { params: { id: string } }) {
     <div className="flex flex-col flex-1 space-y-4">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">
-          Détails de l'utilisateur <code>#{params.id}</code>
+          {t('userDetailsTitle')} <code>#{params.id}</code>
         </h2>
         {userData?.deletedAt === null ? (
           <Button variant="destructive" onClick={() => triggerDelete()} disabled={userData?.deletedAt !== null}>
-            Supprimer l'utilisateur
+            {t('deleteUserButton')}
           </Button>
         ) : (
           <Button variant="secondary" onClick={() => triggerDelete()} disabled={userData?.deletedAt !== null}>
-            Utilisateur supprimé
+            {t('userDeletedButton')}
           </Button>
         )}
       </div>
@@ -98,11 +100,11 @@ export default function UserDetails({ params }: { params: { id: string } }) {
                 name="firstName"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Prénom</FormLabel>
+                    <FormLabel>{t('firstName.label')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Prénom" {...field} />
+                      <Input placeholder={t('firstName.placeholder')} {...field} />
                     </FormControl>
-                    <FormDescription>Le prénom de l&apos;utilisateur</FormDescription>
+                    <FormDescription>{t('firstName.description')}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -112,11 +114,11 @@ export default function UserDetails({ params }: { params: { id: string } }) {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Nom</FormLabel>
+                    <FormLabel>{t('lastName.label')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Nom" {...field} />
+                      <Input placeholder={t('lastName.placeholder')} {...field} />
                     </FormControl>
-                    <FormDescription>Le nom de l&apos;utilisateur</FormDescription>
+                    <FormDescription>{t('lastName.description')}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -128,11 +130,11 @@ export default function UserDetails({ params }: { params: { id: string } }) {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('email.label')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email" {...field} />
+                      <Input placeholder={t('email.placeholder')} {...field} />
                     </FormControl>
-                    <FormDescription>L&apos;email de l&apos;utilisateur</FormDescription>
+                    <FormDescription>{t('email.description')}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -142,7 +144,7 @@ export default function UserDetails({ params }: { params: { id: string } }) {
                 name="role"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Rôle</FormLabel>
+                    <FormLabel>{t('role.label')}</FormLabel>
                     <FormControl>
                       <Select onValueChange={field.onChange} value={userData.role}>
                         <SelectTrigger>
@@ -151,19 +153,19 @@ export default function UserDetails({ params }: { params: { id: string } }) {
                         <SelectContent>
                           {['admin', 'support', 'client', 'courier'].map((role, index) => (
                             <SelectItem key={index} value={role}>
-                              {role.charAt(0).toUpperCase() + role.slice(1)}
+                              {t(`role.options.${role}`)}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
-                    <FormDescription>Le rôle de l&apos;utilisateur</FormDescription>
+                    <FormDescription>{t('role.description')}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <Button type="submit">Enregistrer</Button>
+            <Button type="submit">{t('saveButton')}</Button>
           </form>
         </Form>
       )}

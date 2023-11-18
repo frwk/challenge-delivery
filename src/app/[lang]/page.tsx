@@ -12,8 +12,10 @@ import { ComplaintsChart } from '@/components/charts/ComplaintsChart';
 import { User } from '@/types/user';
 import { UsersChart } from '@/components/charts/UsersChart';
 import { Complaint } from '@/types/complaint';
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
+  const t = useTranslations('Home');
   const [timeScope, setTimeScope] = useState<EnumTimeScope>(EnumTimeScope.DAY);
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -64,29 +66,29 @@ export default function Home() {
   return (
     <div className="flex-1 space-y-4 pt-6">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+        <h2 className="text-3xl font-bold tracking-tight">{t('heading')}</h2>
       </div>
       <Tabs onValueChange={onTimeScopeChange} defaultValue={EnumTimeScope.DAY}>
         <TabsList>
-          <TabsTrigger value={EnumTimeScope.ALL}>Tout</TabsTrigger>
-          <TabsTrigger value={EnumTimeScope.DAY}>Aujourd&apos;hui</TabsTrigger>
-          <TabsTrigger value={EnumTimeScope.WEEK}>Semaine</TabsTrigger>
-          <TabsTrigger value={EnumTimeScope.MONTH}>Mois</TabsTrigger>
-          <TabsTrigger value={EnumTimeScope.YEAR}>Année</TabsTrigger>
+          <TabsTrigger value={EnumTimeScope.ALL}>{t('all')}</TabsTrigger>
+          <TabsTrigger value={EnumTimeScope.DAY}>{t('today')}</TabsTrigger>
+          <TabsTrigger value={EnumTimeScope.WEEK}>{t('week')}</TabsTrigger>
+          <TabsTrigger value={EnumTimeScope.MONTH}>{t('month')}</TabsTrigger>
+          <TabsTrigger value={EnumTimeScope.YEAR}>{t('year')}</TabsTrigger>
         </TabsList>
       </Tabs>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-7">
         <Card className="lg:col-span-4">
           <CardHeader>
-            <CardTitle>Nombre de livraisons</CardTitle>
-            <CardDescription>Total des livraisons accomplies au cours de la période</CardDescription>
+            <CardTitle>{t('deliveriesCount')}</CardTitle>
+            <CardDescription>{t('deliveriesDescription')}</CardDescription>
           </CardHeader>
           <CardContent className="pl-2">{deliveries.length && <DeliveriesChart deliveries={scopedDeliveries()} timeScope={timeScope} />}</CardContent>
         </Card>
         <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle>Evaluations des commandes</CardTitle>
-            <CardDescription>Répartition des notes données par les clients suite à leurs commandes</CardDescription>
+            <CardTitle>{t('deliveriesNotation')}</CardTitle>
+            <CardDescription>{t('deliveriesNotationDescription')}</CardDescription>
           </CardHeader>
           <CardContent>{deliveries.length && <NotationsChart deliveries={scopedDeliveries()} />}</CardContent>
         </Card>
@@ -94,13 +96,13 @@ export default function Home() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Réclamations</CardTitle>
+            <CardTitle>{t('complaints')}</CardTitle>
           </CardHeader>
           <CardContent>{complaints.length && <ComplaintsChart complaints={scopedComplaints()} timeScope={timeScope} />}</CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Nouveaux clients</CardTitle>
+            <CardTitle>{t('newCustomers')}</CardTitle>
           </CardHeader>
           <CardContent>{users.length && <UsersChart users={scopedUsers()} timeScope={timeScope} />}</CardContent>
         </Card>

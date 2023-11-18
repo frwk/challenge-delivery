@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Row } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import useSWRMutation from 'swr/mutation';
 import { Complaint } from './columns';
@@ -18,6 +19,7 @@ import { Complaint } from './columns';
 export function Actions({ row }: { row: Row<Complaint> }) {
   const complaint: Complaint = row.original;
   const router = useRouter();
+  const t = useTranslations('Complaints.Actions');
 
   async function updateComplaint(url: string, { arg }: { arg: string }) {
     await fetch(url, {
@@ -38,16 +40,16 @@ export function Actions({ row }: { row: Row<Complaint> }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Ouvrir le menu</span>
+          <span className="sr-only">{t('openMenu')}</span>
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => router.push(`/complaints/${complaint.id}`)}>Ouvrir la réclamation</DropdownMenuItem>
-        {complaint.status === 'pending' && <DropdownMenuItem onClick={markAsResolved}>Marquer comme résolu</DropdownMenuItem>}
+        <DropdownMenuLabel>{t('actionsLabel')}</DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => router.push(`/complaints/${complaint.id}`)}>{t('openComplaint')}</DropdownMenuItem>
+        {complaint.status === 'pending' && <DropdownMenuItem onClick={markAsResolved}>{t('markAsResolved')}</DropdownMenuItem>}
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(complaint.id)}>Copier l&apos;ID de la réclamation</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(complaint.id)}>{t('copyComplaintId')}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
