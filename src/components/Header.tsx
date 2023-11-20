@@ -5,6 +5,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { UserNav } from './UserNav';
 import { MainNav } from './MainNav';
 import { useAuth } from '@/context/authContext';
+import LanguageSwitcher from './LocaleSwitcher';
 
 export function Header() {
   const { user } = useAuth();
@@ -18,6 +19,7 @@ export function Header() {
           <IconMenu2 size={24} onClick={() => setOpen(!open)} className="sm:hidden" />
           <MainNav className="hidden sm:block" />
           <div className="ml-auto flex items-center space-x-4">
+            <LanguageSwitcher />
             <ThemeToggle />
             <UserNav />
           </div>

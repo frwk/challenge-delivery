@@ -1,5 +1,5 @@
 import { usePathname } from 'next/navigation';
-import NextLink from 'next/link';
+import { Link as NextLink } from '@/navigation';
 import { NavigationMenuLink, navigationMenuTriggerStyle } from './ui/navigation-menu';
 
 type LinkProps = {
