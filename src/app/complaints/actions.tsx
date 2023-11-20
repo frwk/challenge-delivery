@@ -21,7 +21,7 @@ export function Actions({ row }: { row: Row<Complaint> }) {
 
   async function updateComplaint(url: string, { arg }: { arg: string }) {
     await fetch(url, {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify({ status: arg }),
       headers: {
         'Content-Type': 'application/json',

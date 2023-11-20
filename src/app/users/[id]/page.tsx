@@ -30,14 +30,13 @@ export default function UserDetails({ params }: { params: { id: string } }) {
       firstName: '',
       lastName: '',
       email: '',
-      // @ts-ignore
-      role: '',
+      role: undefined,
     },
   });
 
   async function updateUser(url: string, data: { [key: string]: string }) {
     await fetch(url, {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify(data.arg),
       headers: {
         'Content-Type': 'application/json',

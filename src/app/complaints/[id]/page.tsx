@@ -47,7 +47,7 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
 
   async function updateComplaint(url: string, { arg }: { arg: string }) {
     await fetch(url, {
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify({ status: arg }),
       headers: {
         'Content-Type': 'application/json',
