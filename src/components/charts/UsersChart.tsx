@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
+import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
 import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -14,6 +15,7 @@ dayjs.extend(isoWeek);
 dayjs.locale('fr');
 
 export function UsersChart({ users, timeScope }: { users: User[]; timeScope: EnumTimeScope }) {
+  const t = useTranslations('Home.UsersChart');
   const { resolvedTheme } = useTheme();
 
   function createDataObjects(timeScope: EnumTimeScope) {
@@ -120,7 +122,7 @@ export function UsersChart({ users, timeScope }: { users: User[]; timeScope: Enu
               color: resolvedTheme === 'dark' ? 'hsl(0 0% 95%)' : 'hsl(240 10% 3.9%)',
               fontWeight: '600',
             }}
-            formatter={value => [`${value} inscription${Number(value) > 1 ? 's' : ''}`, null]}
+            formatter={value => [t('signups', { count: +value }), null]}
           />
           <XAxis dataKey="label" fontSize={12} tickLine={false} axisLine={false} />
           <YAxis type="number" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />

@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
+import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
 import { Legend, RadialBar, RadialBarChart, ResponsiveContainer, Tooltip } from 'recharts';
@@ -13,6 +14,7 @@ dayjs.extend(isoWeek);
 dayjs.locale('fr');
 
 export function NotationsChart({ deliveries }: { deliveries: Delivery[] }) {
+  const t = useTranslations('Home.NotationsChart');
   const { resolvedTheme } = useTheme();
 
   const getDeliveriesByNote = (deliveries: Delivery[]) => {
@@ -67,7 +69,7 @@ export function NotationsChart({ deliveries }: { deliveries: Delivery[] }) {
               color: resolvedTheme === 'dark' ? 'hsl(0 0% 95%)' : 'hsl(240 10% 3.9%)',
               fontWeight: '600',
             }}
-            formatter={value => [`${value} note${Number(value) > 1 ? 's' : ''}`, null]}
+            formatter={value => [`${t('ratings', { count: +value })}`, null]}
           />
         </RadialBarChart>
       </ResponsiveContainer>

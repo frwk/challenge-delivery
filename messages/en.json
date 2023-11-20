@@ -31,7 +31,20 @@
     "deliveriesNotation": "Order Ratings",
     "deliveriesNotationDescription": "Distribution of ratings given by customers for their orders",
     "complaints": "Complaints",
-    "newCustomers": "New Customers"
+    "newCustomers": "New Customers",
+    "UsersChart": {
+      "signups": "{count, plural, =0 {# signup} =1 {# signup} other {# signups}}"
+    },
+    "NotationsChart": {
+      "ratings": "{count, plural, =0 {# rating} =1 {# rating} other {# ratings}}"
+    },
+    "DeliveriesChart": {
+      "deliveries": "{count, plural, =0 {# delivery} =1 {# delivery} other {# deliveries}}"
+    },
+    "ComplaintsChart": {
+      "complaints": "{count, plural, =0 {# complaint} =1 {# complaint} other {# complaints}}",
+      "resolved": "{count, plural, =0 {# resolved} =1 {# resolved} other {# resolved}}"
+    }
   },
   "Datatable": {
     "filterByName": "Filter by name...",
