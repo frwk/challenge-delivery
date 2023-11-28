@@ -19,7 +19,6 @@ export default async function middleware(req: NextRequest) {
 
   // Check if the user is authenticated
   const { data, error }: CheckAuthResponse = await authService.checkAuth(req.cookies.getAll());
-  const isProtectedRoute = req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/signup';
 
   try {
     // Handle public pages
@@ -35,7 +34,7 @@ export default async function middleware(req: NextRequest) {
     }
   } catch (error) {
     // Redirect unauthenticated user from protected routes to `/login`
-    if (isProtectedRoute) {
+    if (!isPublicPage) {
       return Response.redirect(new URL('/login', req.nextUrl.origin));
     }
   }

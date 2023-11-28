@@ -115,7 +115,10 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                       </span>
                     </div>
                     <div className="space-y-1">
-                      {t('orderStatusLabel')} : <span className="font-bold">{DELIVERIES_STATUSES_MAPPING[complaintData?.delivery.status]}</span>
+                      {t('orderStatusLabel')} :{' '}
+                      <span className="font-bold">
+                        {complaintData?.delivery?.status && DELIVERIES_STATUSES_MAPPING[complaintData.delivery.status as DeliveriesStatusesEnum]}
+                      </span>
                     </div>
                     <div className="space-y-1">
                       {t('pickupAddressLabel')} : <span className="font-bold">{complaintData?.delivery && deliveryPickupAddress}</span>
