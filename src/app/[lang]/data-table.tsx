@@ -18,6 +18,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -26,6 +27,7 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTableProps<TData, TValue>) {
+  const t = useTranslations('Datatable');
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -52,7 +54,7 @@ export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTable
       <div className="flex items-center">
         <div className="flex flex-1 py-4">
           <Input
-            placeholder="Filtrer par nom..."
+            placeholder={t('filterByName')}
             value={(table.getColumn('userFullName')?.getFilterValue() as string) ?? ''}
             onChange={event => table.getColumn('userFullName')?.setFilterValue(event.target.value)}
             className="max-w-sm"
@@ -61,7 +63,7 @@ export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTable
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Colonnes
+              {t('columns')}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -114,7 +116,7 @@ export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTable
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {isLoading ? 'Chargement...' : 'Aucun résultat'}
+                  {isLoading ? t('loading') : t('noResults')}
                 </TableCell>
               </TableRow>
             )}
@@ -123,10 +125,10 @@ export function DataTable<TData, TValue>({ columns, data, isLoading }: DataTable
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-          Précédent
+          {t('previous')}
         </Button>
         <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-          Suivant
+          {t('next')}
         </Button>
       </div>
     </div>

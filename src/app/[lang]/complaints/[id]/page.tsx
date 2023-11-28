@@ -3,20 +3,22 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { DELIVERIES_STATUSES_MAPPING } from '@/lib/utils';
 import { Complaint } from '@/types/complaint';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { Chat } from '../../../components/complaints/chat';
+import { Chat } from '../../../../components/complaints/chat';
 import { useRouter } from 'next/navigation';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useTranslations } from 'next-intl';
+import { DeliveriesStatusesEnum } from '@/types/DeliveriesStatusesEnum';
 dayjs.locale('fr');
 
 export default function ComplaintsDetails({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const t = useTranslations('Complaints.Details');
   const [complaintData, setComplaintData] = useState<Complaint | null>(null);
   const [deliveryDropoffAddress, setDeliveryDropoffAdress] = useState<string>('');
   const [deliveryPickupAddress, setDeliveryPickupAdress] = useState<string>('');
@@ -31,6 +33,13 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
     data ? `https://api-adresse.data.gouv.fr/reverse/?lon=${data?.delivery?.pickupLongitude}&lat=${data?.delivery?.pickupLatitude}` : null,
     (url: string) => fetch(url).then(res => res.json()),
   );
+
+  const DELIVERIES_STATUSES_MAPPING: Record<DeliveriesStatusesEnum, string> = {
+    [DeliveriesStatusesEnum.PENDING]: t('pendingStatus'),
+    [DeliveriesStatusesEnum.PICKED_UP]: t('pickedUpStatus'),
+    [DeliveriesStatusesEnum.DELIVERED]: t('deliveredStatus'),
+    [DeliveriesStatusesEnum.CANCELLED]: t('cancelledStatus'),
+  };
 
   useEffect(() => {
     if (data === null) return router.push('/complaints');
@@ -64,23 +73,23 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
     <div className="flex flex-col flex-1 space-y-4">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">
-          Réclamation <code>#{params.id}</code>
+          {t('complaintIdLabel')} <code>#{params.id}</code>
         </h2>
         {complaintData?.status === 'pending' ? (
           <Button variant="default" onClick={markAsResolved}>
-            Marquer comme résolu
+            {t('resolvedButton.label')}
           </Button>
         ) : (
           <Button variant="secondary" disabled>
-            Réclamation résolue
+            {t('resolvedStatus')}
           </Button>
         )}
       </div>
       <div className="flex flex-1 gap-4">
         <div className="flex flex-col flex-1 gap-2">
           <div className="space-y-1">
-            <h3 className="text-xl font-bold tracking-tight">Démarrer une conversation</h3>
-            <p className="text-gray-500">Discutez avec le client pour résoudre le problème.</p>
+            <h3 className="text-xl font-bold tracking-tight">{t('startConversation.title')}</h3>
+            <p className="text-gray-500">{t('startConversation.description')}</p>
           </div>
           {complaintData && <Chat complaint={complaintData} />}
         </div>
@@ -88,37 +97,39 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
           {!isLoading ? (
             <Tabs defaultValue="delivery" className="w-[400px]">
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="delivery">Commande</TabsTrigger>
-                <TabsTrigger value="user">Client</TabsTrigger>
-                <TabsTrigger value="courier">Livreur</TabsTrigger>
+                <TabsTrigger value="delivery">{t('orderTabLabel')}</TabsTrigger>
+                <TabsTrigger value="user">{t('customerTabLabel')}</TabsTrigger>
+                <TabsTrigger value="courier">{t('courierTabLabel')}</TabsTrigger>
               </TabsList>
               <TabsContent value="delivery">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Information sur la commande</CardTitle>
-                    <CardDescription>Informations sur la commande ayant fait l&apos;objet de la réclamation.</CardDescription>
+                    <CardTitle>{t('orderInfoTitle')}</CardTitle>
+                    <CardDescription>{t('orderInfoDescription')}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="space-y-1">
-                      Numéro de commande:{' '}
+                      {t('orderNumberLabel')} :{' '}
                       <span className="font-bold">
                         <code>#{complaintData?.delivery.id}</code>
                       </span>
                     </div>
                     <div className="space-y-1">
-                      Statut de la commande: <span className="font-bold">{DELIVERIES_STATUSES_MAPPING[complaintData?.delivery.status]}</span>
+                      {t('orderStatusLabel')} : <span className="font-bold">{DELIVERIES_STATUSES_MAPPING[complaintData?.delivery.status]}</span>
                     </div>
                     <div className="space-y-1">
-                      Adresse de récupération: <span className="font-bold">{complaintData?.delivery && deliveryPickupAddress}</span>
+                      {t('pickupAddressLabel')} : <span className="font-bold">{complaintData?.delivery && deliveryPickupAddress}</span>
                     </div>
                     <div className="space-y-1">
-                      Adresse de livraison: <span className="font-bold">{complaintData?.delivery && deliveryDropoffAddress}</span>
+                      {t('deliveryAddressLabel')} : <span className="font-bold">{complaintData?.delivery && deliveryDropoffAddress}</span>
                     </div>
                     <div className="space-y-1">
-                      Commandé le <span className="font-bold">{dayjs(complaintData?.delivery.createdAt).format('DD MMMM YYYY à HH:mm')}</span>
+                      {t('orderedOnLabel')}{' '}
+                      <span className="font-bold">{dayjs(complaintData?.delivery.createdAt).format('DD MMMM YYYY à HH:mm')}</span>
                     </div>
                     <div className="space-y-1">
-                      Livré le <span className="font-bold">{dayjs(complaintData?.delivery.dropoffDate).format('DD MMMM YYYY à HH:mm')}</span>
+                      {t('deliveredOnLabel')}{' '}
+                      <span className="font-bold">{dayjs(complaintData?.delivery.dropoffDate).format('DD MMMM YYYY à HH:mm')}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -126,18 +137,18 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
               <TabsContent value="user">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Information du client</CardTitle>
-                    <CardDescription>Informations du client ayant fait la réclamation.</CardDescription>
+                    <CardTitle>{t('customerInfoTitle')}</CardTitle>
+                    <CardDescription>{t('customerInfoDescription')}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="space-y-1">
-                      Nom: <span className="font-bold">{complaintData?.user.firstName}</span>
+                      {t('customerNameLabel')} : <span className="font-bold">{complaintData?.user.firstName}</span>
                     </div>
                     <div className="space-y-1">
-                      Prénom: <span className="font-bold">{complaintData?.user.lastName}</span>
+                      {t('customerFirstNameLabel')} : <span className="font-bold">{complaintData?.user.lastName}</span>
                     </div>
                     <div className="space-y-1">
-                      Email: <span className="font-bold">{complaintData?.user.email}</span>
+                      {t('customerEmailLabel')} : <span className="font-bold">{complaintData?.user.email}</span>
                     </div>
                     <div className="space-y-1 flex flex-1">
                       <TooltipProvider>
@@ -149,12 +160,12 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                               className="pl-0"
                               disabled={complaintData?.user.deletedAt !== null}
                             >
-                              Voir le client
+                              {t('viewCustomerButton')}
                             </Button>
                           </TooltipTrigger>
                           {complaintData?.user.deletedAt !== null ? (
                             <TooltipContent>
-                              <span className="text-gray-300">Ce client a été supprimé.</span>
+                              <span className="text-gray-300">{t('deletedCustomerMessage')}</span>
                             </TooltipContent>
                           ) : null}
                         </Tooltip>
@@ -166,18 +177,18 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
               <TabsContent value="courier">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Information du livreur</CardTitle>
-                    <CardDescription>Informations du livreur ayant livré la commande.</CardDescription>
+                    <CardTitle>{t('courierInfoTitle')}</CardTitle>
+                    <CardDescription>{t('courierInfoDescription')}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="space-y-1">
-                      Nom: <span className="font-bold">{complaintData?.delivery.courier.user.firstName}</span>
+                      {t('courierNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user.firstName}</span>
                     </div>
                     <div className="space-y-1">
-                      Prénom: <span className="font-bold">{complaintData?.delivery.courier.user.lastName}</span>
+                      {t('courierFirstNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user.lastName}</span>
                     </div>
                     <div className="space-y-1">
-                      Email: <span className="font-bold">{complaintData?.delivery.courier.user.email}</span>
+                      {t('courierEmailLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user.email}</span>
                     </div>
                     <div className="space-y-1">
                       <TooltipProvider>
@@ -189,12 +200,12 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                               className="pl-0"
                               disabled={complaintData?.delivery.courier.user.deletedAt !== null}
                             >
-                              Voir le livreur
+                              {t('viewCourierButton')}
                             </Button>
                           </TooltipTrigger>
                           {complaintData?.delivery.courier.user.deletedAt !== null ? (
                             <TooltipContent>
-                              <span className="text-gray-300">Ce livreur a été supprimé.</span>
+                              <span className="text-gray-300">{t('deletedCourierMessage')}</span>
                             </TooltipContent>
                           ) : null}
                         </Tooltip>

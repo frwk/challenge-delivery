@@ -1,17 +1,15 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import authService from '../services/authService';
-import { UserAuth } from '@/types/user';
-import { usePathname, useRouter } from 'next/navigation';
+'use client';
 import { AuthContextProps, CheckAuthResponse, LoginDto, LoginResponse, LogoutResponse } from '@/types/auth';
+import { UserAuth } from '@/types/user';
+import { useRouter } from 'next/navigation';
+import { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
+import authService from '../services/authService';
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserAuth | null>(null);
   const router = useRouter();
-  const pathname = usePathname();
-
-  const isProtectedRoute = pathname !== '/login' && pathname !== '/signup';
 
   const authenticateUser = useCallback(async () => {
     try {
@@ -19,23 +17,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (error) throw new Error(error.message);
       if (data) {
         setUser(data);
-        if (pathname === '/login' || pathname === '/signup') {
-          router.push('/');
-        }
       }
     } catch (error) {
-      if (isProtectedRoute) {
-        router.push('/login');
-      }
+      console.log('error', error);
     }
-  }, [pathname, isProtectedRoute, router]);
+  }, []);
 
   const login = async (data: LoginDto): Promise<LoginResponse> => {
     const { data: userData, error } = await authService.login(data);
     if (error) return { error: error };
     if (userData) {
       setUser(userData);
-      router.refresh();
+      router.push('/');
       return { data: userData };
     }
     return { error: { message: 'Erreur inconnue', statusCode: 500 } };
@@ -45,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { error }: LogoutResponse = await authService.logout();
     if (error) throw new Error(error.message);
     setUser(null);
-    router.refresh();
+    router.push('/');
   };
 
   useEffect(() => {

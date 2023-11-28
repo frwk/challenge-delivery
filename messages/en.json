@@ -1,0 +1,194 @@
+{
+  "MainNav": {
+    "dashboard": "Dashboard",
+    "map": "Map",
+    "deliveries": "Deliveries",
+    "users": "Users",
+    "complaints": "Complaints"
+  },
+  "UserNav": {
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "ThemeToggle": {
+    "changeTheme": "Change Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "CalendarDateRangePicker": {
+    "chooseDate": "Choose a date"
+  },
+  "Home": {
+    "heading": "Dashboard",
+    "all": "All",
+    "today": "Today",
+    "week": "Week",
+    "month": "Month",
+    "year": "Year",
+    "deliveriesCount": "Number of deliveries",
+    "deliveriesDescription": "Total deliveries completed during the period",
+    "deliveriesNotation": "Order Ratings",
+    "deliveriesNotationDescription": "Distribution of ratings given by customers for their orders",
+    "complaints": "Complaints",
+    "newCustomers": "New Customers",
+    "UsersChart": {
+      "signups": "{count, plural, =0 {# signup} =1 {# signup} other {# signups}}"
+    },
+    "NotationsChart": {
+      "ratings": "{count, plural, =0 {# rating} =1 {# rating} other {# ratings}}"
+    },
+    "DeliveriesChart": {
+      "deliveries": "{count, plural, =0 {# delivery} =1 {# delivery} other {# deliveries}}"
+    },
+    "ComplaintsChart": {
+      "complaints": "{count, plural, =0 {# complaint} =1 {# complaint} other {# complaints}}",
+      "resolved": "{count, plural, =0 {# resolved} =1 {# resolved} other {# resolved}}"
+    }
+  },
+  "Datatable": {
+    "filterByName": "Filter by name...",
+    "columns": "Columns",
+    "loading": "Loading...",
+    "noResults": "No results",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "Login": {
+    "title": "Login",
+    "description": "Enter your credentials to access the administration area",
+    "Form": {
+      "emailInvalid": "Email is invalid",
+      "emailMinLength": "Email must be at least 2 characters long",
+      "passwordMinLength": "Password must be at least 8 characters long",
+      "unknownError": "An error occurred",
+      "incorrectCredentials": "Credentials are incorrect",
+      "error": "Error",
+      "emailPlaceholder": "Email",
+      "passwordPlaceholder": "Password",
+      "loginButton": "Login"
+    }
+  },
+  "Users": {
+    "pageTitle": "Users",
+    "loadingError": "Error loading data",
+    "Details": {
+      "firstName": {
+        "label": "First Name",
+        "placeholder": "First Name",
+        "description": "User's first name",
+        "required": "First name is required"
+      },
+      "lastName": {
+        "label": "Last Name",
+        "placeholder": "Last Name",
+        "description": "User's last name",
+        "required": "Last name is required"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Email",
+        "description": "User's email",
+        "invalid": "Email is invalid"
+      },
+      "role": {
+        "label": "Role",
+        "description": "User's role",
+        "required": "Role is required",
+        "options": {
+          "admin": "Admin",
+          "support": "Support",
+          "client": "Client",
+          "courier": "Courier"
+        }
+      },
+      "updateSuccessTitle": "User Updated",
+      "updateSuccessDescription": "User information has been successfully updated",
+      "deleteSuccessTitle": "User Deleted",
+      "deleteSuccessDescription": "User has been successfully deleted",
+      "userDetailsTitle": "User Details",
+      "deleteUserButton": "Delete User",
+      "userDeletedButton": "User Deleted",
+      "saveButton": "Save"
+    },
+    "Actions": {
+      "OpenMenu": "Open Menu",
+      "ActionsLabel": "Actions",
+      "ViewUser": "View User",
+      "DeleteUser": "Delete User",
+      "CopyUserID": "Copy User ID",
+      "UserDeletedTitle": "User Deleted",
+      "UserDeletedDescription": "User has been successfully deleted"
+    }
+  },
+  "Map": {
+    "heading": "Delivery Map",
+    "status": "Status",
+    "all": "All",
+    "available": "Available",
+    "onDelivery": "On Delivery",
+    "unavailable": "Unavailable",
+    "openProfile": "Open Profile"
+  },
+  "Complaints": {
+    "heading": "Complaints",
+    "loadingError": "Error loading data",
+    "Details": {
+      "startConversation": {
+        "title": "Start a Conversation",
+        "description": "Chat with the customer to resolve the issue."
+      },
+      "resolvedButton": {
+        "label": "Mark as Resolved"
+      },
+      "pendingStatus": "Pending",
+      "pickedUpStatus": "On the Way",
+      "deliveredStatus": "Delivered",
+      "cancelledStatus": "Cancelled",
+      "resolvedStatus": "Complaint Resolved",
+      "complaintIdLabel": "Complaint",
+      "orderTabLabel": "Order",
+      "customerTabLabel": "Customer",
+      "courierTabLabel": "Courier",
+      "orderInfoTitle": "Order Information",
+      "orderInfoDescription": "Information about the order that is the subject of the complaint.",
+      "orderNumberLabel": "Order Number",
+      "orderStatusLabel": "Order Status",
+      "pickupAddressLabel": "Pickup Address",
+      "deliveryAddressLabel": "Delivery Address",
+      "orderedOnLabel": "Ordered On",
+      "deliveredOnLabel": "Delivered On",
+      "customerInfoTitle": "Customer Information",
+      "customerInfoDescription": "Information about the customer who made the complaint.",
+      "customerNameLabel": "Name",
+      "customerFirstNameLabel": "First Name",
+      "customerEmailLabel": "Email",
+      "viewCustomerButton": "View Customer",
+      "deletedCustomerMessage": "This customer has been deleted.",
+      "courierInfoTitle": "Courier Information",
+      "courierInfoDescription": "Information about the courier who delivered the order.",
+      "courierNameLabel": "Name",
+      "courierFirstNameLabel": "First Name",
+      "courierEmailLabel": "Email",
+      "viewCourierButton": "View Courier",
+      "deletedCourierMessage": "This courier has been deleted."
+    },
+    "Actions": {
+      "openMenu": "Open Menu",
+      "actionsLabel": "Actions",
+      "openComplaint": "Open Complaint",
+      "markAsResolved": "Mark as Resolved",
+      "copyComplaintId": "Copy Complaint ID"
+    },
+    "Chat": {
+      "ConnexionUninitialized": "Connection Uninitialized",
+      "ConnexionEstablishing": "Connection Establishing...",
+      "ConnexionEstablished": "Write your message...",
+      "ConnexionClosing": "Closing Connection...",
+      "ConnexionClosed": "Connection closed. Please refresh the page...",
+      "UnknownConnectionState": "Unknown Connection State",
+      "ResolvedComplaintMessage": "The complaint has been resolved...",
+      "Send": "Send"
+    }
+  }
+}

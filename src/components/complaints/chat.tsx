@@ -6,6 +6,7 @@ import { createRef, useCallback, useEffect, useState } from 'react';
 import { MessageList, MessageType } from 'react-chat-elements';
 import 'react-chat-elements/dist/main.css';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { useTranslations } from 'next-intl';
 
 enum UserType {
   CLIENT = 'client',
@@ -26,6 +27,7 @@ interface MessageResponse {
 }
 
 export function Chat({ complaint }: { complaint: Complaint | null }) {
+  const t = useTranslations('Complaints.Chat');
   const { user } = useAuth();
   const messageListReferance = createRef();
   const [messageHistory, setMessageHistory] = useState<MessageType[]>([]);
@@ -38,15 +40,15 @@ export function Chat({ complaint }: { complaint: Complaint | null }) {
 
   useEffect(() => {
     const placeholderTextMap = {
-      [ReadyState.UNINSTANTIATED]: 'Connexion non initialisée',
-      [ReadyState.CONNECTING]: 'Connexion en cours...',
-      [ReadyState.OPEN]: 'Écrivez votre message...',
-      [ReadyState.CLOSING]: 'Fermeture de la connexion...',
-      [ReadyState.CLOSED]: 'Connexion fermée. Veuillez rafraîchir la page...',
-      default: 'État de connexion inconnu',
+      [ReadyState.UNINSTANTIATED]: t('ConnexionUninitialized'),
+      [ReadyState.CONNECTING]: t('ConnexionEstablishing'),
+      [ReadyState.OPEN]: t('ConnexionEstablished'),
+      [ReadyState.CLOSING]: t('ConnexionClosing'),
+      [ReadyState.CLOSED]: t('ConnexionClosed'),
+      default: t('UnknownConnectionState'),
     };
     setPlaceholderText(placeholderTextMap[readyState] ?? placeholderTextMap.default);
-  }, [readyState]);
+  }, [readyState, t]);
 
   const userTypeToFloat = useCallback(
     (userType: UserType) => {
@@ -153,7 +155,7 @@ export function Chat({ complaint }: { complaint: Complaint | null }) {
       </div>
       <div className="flex items-center border-y p-2">
         <Input
-          placeholder={complaint?.status === 'resolved' ? 'This complaint is resolved...' : placeholderText}
+          placeholder={complaint?.status === 'resolved' ? t('ResolvedComplaintMessage') : placeholderText}
           onKeyDown={e => {
             if (e.shiftKey && e.key === 'Enter') {
               return;
@@ -169,7 +171,7 @@ export function Chat({ complaint }: { complaint: Complaint | null }) {
           value={messageText}
         />
         <Button variant="link" onClick={handleSendMessage} disabled={readyState !== ReadyState.OPEN || complaint?.status === 'resolved'}>
-          Send
+          {t('Send')}
         </Button>
       </div>
     </div>

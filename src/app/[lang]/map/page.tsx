@@ -5,12 +5,14 @@ import { useEffect, useState } from 'react';
 import Map, { FullscreenControl, GeolocateControl, NavigationControl, Marker, Popup } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { IconBike } from '@tabler/icons-react';
-import { CourierStatusesEnum, getStatusLabel } from '@/types/CourierStatusesEnum';
+import { CourierStatusesEnum } from '@/types/CourierStatusesEnum';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function CouriersMap() {
+  const t = useTranslations('Map');
   const router = useRouter();
   const [couriers, setCouriers] = useState<Courier[]>([]);
   const [selectedCourier, setSelectedCourier] = useState<Courier | null>(null);
@@ -24,6 +26,17 @@ export default function CouriersMap() {
         return 'bg-orange-500';
       default:
         return 'bg-red-500';
+    }
+  }
+
+  function getStatusLabel(status: CourierStatusesEnum) {
+    switch (status) {
+      case CourierStatusesEnum.AVAILABLE:
+        return t('available');
+      case CourierStatusesEnum.ONDELIVERY:
+        return t('onDelivery');
+      default:
+        return t('unavailable');
     }
   }
 
@@ -43,16 +56,17 @@ export default function CouriersMap() {
       eventSource.close();
     };
   }, []);
+
   return (
     <div className="flex flex-col flex-1 pt-6">
       <div className="flex items-center">
-        <h2 className="text-3xl font-bold tracking-tight mb-4">Carte des livreurs</h2>
+        <h2 className="text-3xl font-bold tracking-tight mb-4">{t('heading')}</h2>
         <Select defaultValue="all" onValueChange={value => setSelectedStatus(value as CourierStatusesEnum)}>
           <SelectTrigger className="w-[180px] ml-auto mb-4">
-            <SelectValue placeholder="Statut" />
+            <SelectValue placeholder={t('status')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Tous</SelectItem>
+            <SelectItem value="all">{t('all')}</SelectItem>
             {Object.values(CourierStatusesEnum).map((element, index) => {
               return (
                 <SelectItem key={index} value={element}>
@@ -110,7 +124,7 @@ export default function CouriersMap() {
               </span>
               <span>{getStatusLabel(selectedCourier.status)}</span>
               <Button variant="link" onClick={() => router.push(`/users/${selectedCourier.user.id}`)}>
-                Ouvrir le profil
+                {t('openProfile')}
               </Button>
             </div>
           </Popup>

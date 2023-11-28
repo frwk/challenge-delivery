@@ -9,11 +9,13 @@ import weekOfYear from 'dayjs/plugin/weekOfYear';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { useTheme } from 'next-themes';
 import { Complaint } from '@/types/complaint';
+import { useTranslations } from 'next-intl';
 dayjs.extend(weekOfYear);
 dayjs.extend(isoWeek);
 dayjs.locale('fr');
 
 export function ComplaintsChart({ complaints, timeScope }: { complaints: Complaint[]; timeScope: EnumTimeScope }) {
+  const t = useTranslations('Home.ComplaintsChart');
   const { resolvedTheme } = useTheme();
 
   function createDataObjects(timeScope: EnumTimeScope) {
@@ -121,7 +123,7 @@ export function ComplaintsChart({ complaints, timeScope }: { complaints: Complai
               color: resolvedTheme === 'dark' ? 'hsl(0 0% 95%)' : 'hsl(240 10% 3.9%)',
               fontWeight: '600',
             }}
-            formatter={(value, name) => [`${value} ${name === 'resolved' ? 'résolue' : 'réclamation'}${Number(value) > 1 ? 's' : ''}`, null]}
+            formatter={(value, name) => [`${name === 'resolved' ? t('resolved', { count: +value }) : t('complaints', { count: +value })}`, null]}
           />
           <XAxis dataKey="label" fontSize={12} tickLine={false} axisLine={false} />
           <YAxis type="number" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
