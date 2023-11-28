@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (error) return { error: error };
     if (userData) {
       setUser(userData);
-      router.push('/');
+      router.refresh();
       return { data: userData };
     }
     return { error: { message: 'Erreur inconnue', statusCode: 500 } };
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { error }: LogoutResponse = await authService.logout();
     if (error) throw new Error(error.message);
     setUser(null);
-    router.push('/');
+    router.refresh();
   };
 
   useEffect(() => {
