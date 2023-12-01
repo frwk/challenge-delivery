@@ -123,7 +123,7 @@ export default function CouriersMap() {
                 {selectedCourier.firstName} {selectedCourier.lastName}
               </span>
               <span>{getStatusLabel(selectedCourier.status)}</span>
-              <Button variant="link" onClick={() => router.push(`/users/${selectedCourier.user.id}`)}>
+              <Button variant="link" onClick={() => router.push(`/users/${selectedCourier.user_id}`)}>
                 {t('openProfile')}
               </Button>
             </div>

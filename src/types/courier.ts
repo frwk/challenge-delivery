@@ -6,6 +6,7 @@ export interface Courier {
   id: number;
   isAvailable: boolean;
   user: User;
+  user_id: number;
   firstName: string;
   lastName: string;
   email: string;

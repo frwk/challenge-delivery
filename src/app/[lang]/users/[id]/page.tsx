@@ -148,7 +148,7 @@ export default function UserDetails({ params }: { params: { id: string } }) {
                     <FormControl>
                       <Select onValueChange={field.onChange} value={userData.role}>
                         <SelectTrigger>
-                          <SelectValue>{field?.value?.charAt(0).toUpperCase() + field.value?.slice(1)}</SelectValue>
+                          {field?.value && <SelectValue>{field.value.charAt(0).toUpperCase() + field.value.slice(1)}</SelectValue>}
                         </SelectTrigger>
                         <SelectContent>
                           {['admin', 'support', 'client', 'courier'].map((role, index) => (

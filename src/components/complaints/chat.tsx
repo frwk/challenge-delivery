@@ -34,7 +34,7 @@ export function Chat({ complaint }: { complaint: Complaint | null }) {
   const [messageText, setMessageText] = useState<string>('');
   const [placeholderText, setPlaceholderText] = useState<string>('');
 
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket('ws://localhost:3000/ws');
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(`${process.env.NEXT_PUBLIC_API_URL?.replace('http', 'ws')}/ws`);
 
   const getUserType = (userType: string) => (['client', 'courier'].includes(userType) ? UserType.CLIENT : UserType.SUPPORT);
 
