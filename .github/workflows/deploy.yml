@@ -43,11 +43,11 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull floperrier/challenge-delivery-front-admin:feat-deployment
+            docker pull floperrier/challenge-delivery-front-admin:main
             if [ "$(docker ps -a | grep challenge-delivery-front-admin-container)" ]; then
               docker stop challenge-delivery-front-admin-container
               docker rm challenge-delivery-front-admin-container
             fi
             docker run -d --network challenge-delivery --name challenge-delivery-front-admin-container -p 3000:3001 \
               -e NEXT_PUBLIC_API_URL=${{ secrets.PUBLIC_API_URL }} \
-              floperrier/challenge-delivery-front-admin:feat-deployment
+              floperrier/challenge-delivery-front-admin:main
