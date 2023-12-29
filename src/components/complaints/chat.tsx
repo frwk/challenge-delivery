@@ -135,7 +135,7 @@ export function Chat({ complaint }: { complaint: Complaint | null }) {
       data: {
         userType: user?.role as string,
         complaintId: complaint?.id,
-        userId: complaint?.user.id,
+        userId: user?.id,
         content: userMessageObj.text,
         date: userMessageObj.date,
       },
