@@ -32,6 +32,7 @@
     "deliveriesNotationDescription": "Distribution of ratings given by customers for their orders",
     "complaints": "Complaints",
     "newCustomers": "New Customers",
+    "heatMap": "Dropoff addresses heat map",
     "UsersChart": {
       "signups": "{count, plural, =0 {# signup} =1 {# signup} other {# signups}}"
     },
