@@ -1,3 +1,4 @@
+import { DeliveriesStatusesEnum } from './DeliveriesStatusesEnum';
 import { Courier } from './courier';
 import { User } from './user';
 
@@ -10,7 +11,7 @@ export interface Delivery {
   pickupDate: Date;
   dropoffDate: Date;
   confirmationCode: string;
-  status: string;
+  status: DeliveriesStatusesEnum;
   clientId: number;
   client: User;
   courierId: number;
