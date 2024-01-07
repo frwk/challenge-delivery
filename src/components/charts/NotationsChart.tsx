@@ -8,7 +8,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear';
 import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
-import { Legend, RadialBar, RadialBarChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 dayjs.extend(weekOfYear);
 dayjs.extend(isoWeek);
 dayjs.locale('fr');
@@ -39,7 +39,7 @@ export function NotationsChart({ deliveries }: { deliveries: Delivery[] }) {
           fill = 'hsl(142.1, 70.6%, 45.3%)';
           break;
       }
-      deliveriesByNote.push({ name: note, quantity, fill });
+      deliveriesByNote.push({ name: note, value: quantity, fill });
     }
     return deliveriesByNote;
   };
@@ -49,8 +49,8 @@ export function NotationsChart({ deliveries }: { deliveries: Delivery[] }) {
   return (
     <>
       <ResponsiveContainer width="100%" height={350}>
-        <RadialBarChart barSize={200} innerRadius="10%" outerRadius="100%" data={data} startAngle={180} endAngle={0}>
-          <RadialBar label={false} background dataKey="quantity" />
+        <PieChart>
+          <Pie data={data} cx="50%" cy="50%" labelLine={false} outerRadius={100} fill="#8884d8" dataKey="value" nameKey="name" />
           <Legend iconSize={10} />
           <Tooltip
             wrapperClassName="flex flex-col justify-center items-center rounded shadow-md text-sm"
@@ -69,9 +69,9 @@ export function NotationsChart({ deliveries }: { deliveries: Delivery[] }) {
               color: resolvedTheme === 'dark' ? 'hsl(0 0% 95%)' : 'hsl(240 10% 3.9%)',
               fontWeight: '600',
             }}
-            formatter={value => [`${t('ratings', { count: +value })}`, null]}
+            formatter={(value, name) => [`${t('ratings', { count: +value })}`, name]}
           />
-        </RadialBarChart>
+        </PieChart>
       </ResponsiveContainer>
     </>
   );

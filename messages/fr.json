@@ -32,6 +32,7 @@
     "deliveriesNotationDescription": "Répartition des notes données par les clients suite à leurs commandes",
     "complaints": "Réclamations",
     "newCustomers": "Nouveaux clients",
+    "heatMap": "Carte thermique des adresses de livraison",
     "UsersChart": {
       "signups": "{count, plural, =0 {# nouvel utilisateur} =1 {# nouvel utilisateur} other {# nouveaux utilisateurs}}"
     },
