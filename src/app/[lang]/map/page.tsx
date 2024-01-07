@@ -120,7 +120,7 @@ export default function CouriersMap() {
           >
             <div className="flex flex-col text-center">
               <span className="font-bold text-lg">
-                {selectedCourier.firstName} {selectedCourier.lastName}
+                {selectedCourier?.firstName} {selectedCourier?.lastName}
               </span>
               <span>{getStatusLabel(selectedCourier.status)}</span>
               <Button variant="link" onClick={() => router.push(`/users/${selectedCourier.user_id}`)}>

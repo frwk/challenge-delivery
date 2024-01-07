@@ -17,7 +17,7 @@ export default function Users() {
       const users: User[] = data.map((user: DBUser) => {
         return {
           id: user.id,
-          userFullName: `${user.firstName} ${user.lastName}`,
+          userFullName: `${user?.firstName} ${user?.lastName}`,
           email: user.email,
           role: user.role.charAt(0).toUpperCase() + user.role.slice(1),
           createdAt: user.createdAt,
