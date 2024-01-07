@@ -36,6 +36,7 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
 
   const DELIVERIES_STATUSES_MAPPING: Record<DeliveriesStatusesEnum, string> = {
     [DeliveriesStatusesEnum.PENDING]: t('pendingStatus'),
+    [DeliveriesStatusesEnum.ACCEPTED]: t('acceptedStatus'),
     [DeliveriesStatusesEnum.PICKED_UP]: t('pickedUpStatus'),
     [DeliveriesStatusesEnum.DELIVERED]: t('deliveredStatus'),
     [DeliveriesStatusesEnum.CANCELLED]: t('cancelledStatus'),
@@ -145,10 +146,10 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="space-y-1">
-                      {t('customerNameLabel')} : <span className="font-bold">{complaintData?.user.firstName}</span>
+                      {t('customerNameLabel')} : <span className="font-bold">{complaintData?.user?.firstName}</span>
                     </div>
                     <div className="space-y-1">
-                      {t('customerFirstNameLabel')} : <span className="font-bold">{complaintData?.user.lastName}</span>
+                      {t('customerFirstNameLabel')} : <span className="font-bold">{complaintData?.user?.lastName}</span>
                     </div>
                     <div className="space-y-1">
                       {t('customerEmailLabel')} : <span className="font-bold">{complaintData?.user.email}</span>
@@ -185,10 +186,10 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="space-y-1">
-                      {t('courierNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user.firstName}</span>
+                      {t('courierNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user?.firstName}</span>
                     </div>
                     <div className="space-y-1">
-                      {t('courierFirstNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user.lastName}</span>
+                      {t('courierFirstNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user?.lastName}</span>
                     </div>
                     <div className="space-y-1">
                       {t('courierEmailLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user.email}</span>
