@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import { DataTable } from '../data-table';
 import { Delivery, columns } from './deliveries-columns';
+import fetcher from '@/lib/fetcher';
 
 export default function Deliveries() {
   const [deliveriesData, setDeliveryData] = useState<Delivery[]>([]);
-  const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/deliveries`, url => fetch(url).then(res => res.json()));
+  const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/deliveries`, url => fetcher(url).then(res => res.json()));
 
   useEffect(() => {
     if (data) {

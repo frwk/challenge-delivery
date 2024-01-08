@@ -16,6 +16,7 @@ import { User } from './user-columns';
 import { useToast } from '@/components/ui/use-toast';
 import useSWRMutation from 'swr/mutation';
 import { useTranslations } from 'next-intl';
+import fetcher from '@/lib/fetcher';
 
 export function Actions({ row }: { row: Row<User> }) {
   const t = useTranslations('Users.Actions');
@@ -24,7 +25,7 @@ export function Actions({ row }: { row: Row<User> }) {
   const { toast } = useToast();
 
   async function deleteClient(url: string) {
-    await fetch(url, {
+    await fetcher(url, {
       method: 'DELETE',
     });
   }

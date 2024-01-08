@@ -1,15 +1,15 @@
+import fetcher from '@/lib/fetcher';
 import { CheckAuthResponse, LoginResponse, LogoutResponse } from '@/types/auth';
 import { User } from '@/types/user';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 const login = async (data: { email: string; password: string }): Promise<LoginResponse> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login/admin`, {
+  const response = await fetcher(`${process.env.NEXT_PUBLIC_API_URL}/auth/login/admin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
-    credentials: 'include',
   });
   const parsed = await response.json();
   if (response.status !== 200) {
@@ -24,13 +24,12 @@ const login = async (data: { email: string; password: string }): Promise<LoginRe
 };
 
 const checkAuth = async (cookies?: RequestCookie[]): Promise<CheckAuthResponse> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/check`, {
+  const response = await fetcher(`${process.env.NEXT_PUBLIC_API_URL}/auth/check`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Cookie: cookies?.map(cookie => `${cookie.name}=${cookie.value}`).join('; ') || '',
     },
-    credentials: 'include',
   });
   const parsed = await response.json();
   if (response.status !== 200) {
@@ -40,12 +39,11 @@ const checkAuth = async (cookies?: RequestCookie[]): Promise<CheckAuthResponse> 
 };
 
 const logout = async (): Promise<LogoutResponse> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+  const response = await fetcher(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    credentials: 'include',
   });
   const parsed = await response.json();
   if (response.status !== 200) {

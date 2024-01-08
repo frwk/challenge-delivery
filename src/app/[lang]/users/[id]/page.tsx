@@ -5,6 +5,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
+import fetcher from '@/lib/fetcher';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
@@ -17,7 +18,7 @@ export default function UserDetails({ params }: { params: { id: string } }) {
   const t = useTranslations('Users.Details');
   const router = useRouter();
   const { toast } = useToast();
-  const { data: userData } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, (url: string) => fetch(url).then(res => res.json()));
+  const { data: userData } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/users/${params.id}`, (url: string) => fetcher(url).then(res => res.json()));
 
   const formSchema = z.object({
     firstName: z.string().min(1, { message: t('firstName.required') }),
@@ -37,7 +38,7 @@ export default function UserDetails({ params }: { params: { id: string } }) {
   });
 
   async function updateUser(url: string, data: { [key: string]: string }) {
-    await fetch(url, {
+    await fetcher(url, {
       method: 'PATCH',
       body: JSON.stringify(data.arg),
       headers: {
@@ -55,7 +56,7 @@ export default function UserDetails({ params }: { params: { id: string } }) {
   });
 
   async function deleteUser(url: string) {
-    await fetch(url, {
+    await fetcher(url, {
       method: 'DELETE',
     });
   }

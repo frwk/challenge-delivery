@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslations } from 'next-intl';
 import { DeliveriesStatusesEnum } from '@/types/DeliveriesStatusesEnum';
+import fetcher from '@/lib/fetcher';
 dayjs.locale('fr');
 
 export default function ComplaintsDetails({ params }: { params: { id: string } }) {
@@ -23,15 +24,15 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
   const [deliveryDropoffAddress, setDeliveryDropoffAdress] = useState<string>('');
   const [deliveryPickupAddress, setDeliveryPickupAdress] = useState<string>('');
   const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/complaints/${params.id}`, (url: string) =>
-    fetch(url).then(res => (res.status === 200 ? res.json() : null)),
+    fetcher(url).then(res => (res.status === 200 ? res.json() : null)),
   );
   const { data: deliveryDropoffAddressData } = useSWR(
     data ? `https://api-adresse.data.gouv.fr/reverse/?lon=${data?.delivery?.dropoffLongitude}&lat=${data?.delivery?.dropoffLatitude}` : null,
-    (url: string) => fetch(url).then(res => res.json()),
+    (url: string) => fetcher(url).then(res => res.json()),
   );
   const { data: deliveryPickupAddressData } = useSWR(
     data ? `https://api-adresse.data.gouv.fr/reverse/?lon=${data?.delivery?.pickupLongitude}&lat=${data?.delivery?.pickupLatitude}` : null,
-    (url: string) => fetch(url).then(res => res.json()),
+    (url: string) => fetcher(url).then(res => res.json()),
   );
 
   const DELIVERIES_STATUSES_MAPPING: Record<DeliveriesStatusesEnum, string> = {
@@ -56,7 +57,7 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
   }, [data, deliveryDropoffAddressData, deliveryPickupAddressData, isLoading, router]);
 
   async function updateComplaint(url: string, { arg }: { arg: string }) {
-    await fetch(url, {
+    await fetcher(url, {
       method: 'PATCH',
       body: JSON.stringify({ status: arg }),
       headers: {

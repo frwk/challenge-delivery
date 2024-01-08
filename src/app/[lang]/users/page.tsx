@@ -6,11 +6,12 @@ import { User, columns } from './user-columns';
 import { DataTable } from '../data-table';
 import { User as DBUser } from '@/types/user';
 import { useTranslations } from 'next-intl';
+import fetcher from '@/lib/fetcher';
 
 export default function Users() {
   const t = useTranslations('Users');
   const [usersData, setUserData] = useState<User[]>([]);
-  const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/users`, url => fetch(url).then(res => res.json()));
+  const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/users`, url => fetcher(url).then(res => res.json()));
 
   useEffect(() => {
     if (data) {

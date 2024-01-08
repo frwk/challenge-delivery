@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import fetcher from '@/lib/fetcher';
 import { DELIVERIES_STATUSES_MAPPING } from '@/lib/utils';
 import { DeliveriesStatusesEnum } from '@/types/DeliveriesStatusesEnum';
 import { Delivery } from '@/types/delivery';
@@ -35,15 +36,15 @@ export default function DeliveryDetails({ params }: { params: { id: string } }) 
   const [deliveryDropoffAddress, setDeliveryDropoffAddress] = useState<string>('');
   const [deliveryPickupAddress, setDeliveryPickupAddress] = useState<string>('');
   const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/deliveries/${params.id}`, (url: string) =>
-    fetch(url).then(res => (res.status === 200 ? res.json() : null)),
+    fetcher(url).then(res => (res.status === 200 ? res.json() : null)),
   );
   const { data: deliveryDropoffAddressData } = useSWR(
     data ? `https://api-adresse.data.gouv.fr/reverse/?lon=${data.dropoffLongitude}&lat=${data.dropoffLatitude}` : null,
-    (url: string) => fetch(url).then(res => res.json()),
+    (url: string) => fetcher(url).then(res => res.json()),
   );
   const { data: deliveryPickupAddressData } = useSWR(
     data ? `https://api-adresse.data.gouv.fr/reverse/?lon=${data.pickupLongitude}&lat=${data.pickupLatitude}` : null,
-    (url: string) => fetch(url).then(res => res.json()),
+    (url: string) => fetcher(url).then(res => res.json()),
   );
 
   const { lastJsonMessage } = useWebSocket(`${process.env.NEXT_PUBLIC_API_URL?.replace('http', 'ws')}/ws/delivery-tracking/${params.id}`);
@@ -57,7 +58,7 @@ export default function DeliveryDetails({ params }: { params: { id: string } }) 
   }, [lastJsonMessage]);
 
   // const fetchAddress = async (lon: number, lat: number) => {
-  //   const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lon=${lon}&lat=${lat}&format=json`);
+  //   const response = await fetcher(`https://nominatim.openstreetmap.org/reverse?lon=${lon}&lat=${lat}&format=json`);
   //   const data = await response.json();
   //   return `${data.address.house_number} ${data.address.road}, ${data.address.postcode} ${data.address.city}`;
   // };

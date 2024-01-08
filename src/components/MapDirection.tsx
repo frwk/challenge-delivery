@@ -1,3 +1,4 @@
+import fetcher from '@/lib/fetcher';
 import { calculateMidPoint } from '@/lib/utils';
 import { DeliveriesStatusesEnum } from '@/types/DeliveriesStatusesEnum';
 import { IconBike, IconMapPin } from '@tabler/icons-react';
@@ -22,7 +23,7 @@ const MapDirection = ({ marker = null, from, to, status }: MapDirectionProps) =>
   const { midLatitude, midLongitude } = calculateMidPoint(from, to);
 
   async function postDirection(url: string) {
-    return await fetch(url, {
+    return await fetcher(url, {
       method: 'POST',
       body: JSON.stringify({
         from: [from.latitude, from.longitude],

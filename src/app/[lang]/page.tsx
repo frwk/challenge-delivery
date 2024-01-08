@@ -14,6 +14,7 @@ import { UsersChart } from '@/components/charts/UsersChart';
 import { Complaint } from '@/types/complaint';
 import { useTranslations } from 'next-intl';
 import { HeatMapChart } from '@/components/charts/HeatMapChart';
+import fetcher from '@/lib/fetcher';
 
 export default function Home() {
   const t = useTranslations('Home');
@@ -28,17 +29,17 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchDeliveries() {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/deliveries`);
+      const response = await fetcher(`${process.env.NEXT_PUBLIC_API_URL}/deliveries`);
       const data = await response.json();
       setDeliveries(data);
     }
     async function fetchUsers() {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`);
+      const response = await fetcher(`${process.env.NEXT_PUBLIC_API_URL}/users`);
       const data = await response.json();
       setUsers(data);
     }
     async function fetchComplaints() {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/complaints`);
+      const response = await fetcher(`${process.env.NEXT_PUBLIC_API_URL}/complaints`);
       const data = await response.json();
       setComplaints(data);
     }

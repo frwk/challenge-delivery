@@ -6,11 +6,12 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import { DataTable } from '../data-table';
 import { Complaint as ComplaintColumns, columns } from './columns';
+import fetcher from '@/lib/fetcher';
 
 export default function Complaints() {
   const t = useTranslations('Complaints');
   const [complaintData, setComplaintData] = useState<ComplaintColumns[]>([]);
-  const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/complaints`, url => fetch(url).then(res => res.json()));
+  const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/complaints`, url => fetcher(url).then(res => res.json()));
 
   useEffect(() => {
     if (data) {

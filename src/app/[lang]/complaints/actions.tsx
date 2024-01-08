@@ -15,6 +15,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import useSWRMutation from 'swr/mutation';
 import { Complaint } from './columns';
+import fetcher from '@/lib/fetcher';
 
 export function Actions({ row }: { row: Row<Complaint> }) {
   const complaint: Complaint = row.original;
@@ -22,7 +23,7 @@ export function Actions({ row }: { row: Row<Complaint> }) {
   const t = useTranslations('Complaints.Actions');
 
   async function updateComplaint(url: string, { arg }: { arg: string }) {
-    await fetch(url, {
+    await fetcher(url, {
       method: 'PATCH',
       body: JSON.stringify({ status: arg }),
       headers: {
