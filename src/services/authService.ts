@@ -3,7 +3,7 @@ import { User } from '@/types/user';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 const login = async (data: { email: string; password: string }): Promise<LoginResponse> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login/admin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
