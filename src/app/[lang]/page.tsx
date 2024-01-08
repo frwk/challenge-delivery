@@ -13,10 +13,11 @@ import { User } from '@/types/user';
 import { UsersChart } from '@/components/charts/UsersChart';
 import { Complaint } from '@/types/complaint';
 import { useTranslations } from 'next-intl';
+import { HeatMapChart } from '@/components/charts/HeatMapChart';
 
 export default function Home() {
   const t = useTranslations('Home');
-  const [timeScope, setTimeScope] = useState<EnumTimeScope>(EnumTimeScope.DAY);
+  const [timeScope, setTimeScope] = useState<EnumTimeScope>(EnumTimeScope.ALL);
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [complaints, setComplaints] = useState<Complaint[]>([]);
@@ -68,7 +69,7 @@ export default function Home() {
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">{t('heading')}</h2>
       </div>
-      <Tabs onValueChange={onTimeScopeChange} defaultValue={EnumTimeScope.DAY}>
+      <Tabs onValueChange={onTimeScopeChange} defaultValue={EnumTimeScope.ALL}>
         <TabsList>
           <TabsTrigger value={EnumTimeScope.ALL}>{t('all')}</TabsTrigger>
           <TabsTrigger value={EnumTimeScope.DAY}>{t('today')}</TabsTrigger>
@@ -105,6 +106,14 @@ export default function Home() {
             <CardTitle>{t('newCustomers')}</CardTitle>
           </CardHeader>
           <CardContent>{users.length && <UsersChart users={scopedUsers()} timeScope={timeScope} />}</CardContent>
+        </Card>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('heatMap')}</CardTitle>
+          </CardHeader>
+          <CardContent>{deliveries.length && <HeatMapChart deliveries={scopedDeliveries()} timeScope={timeScope} />}</CardContent>
         </Card>
       </div>
     </div>

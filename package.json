@@ -27,6 +27,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@tabler/icons-react": "^2.39.0",
     "@tanstack/react-table": "^8.10.7",
+    "@types/geojson": "^7946.0.13",
     "@types/mapbox-gl": "^2.7.17",
     "@types/negotiator": "^0.6.3",
     "class-variance-authority": "^0.7.0",

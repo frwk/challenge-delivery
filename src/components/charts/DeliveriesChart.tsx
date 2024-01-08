@@ -24,38 +24,39 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
 
     switch (timeScope) {
       case 'day':
-        for (let hour = 0; hour < 24; hour++) {
-          const label = currentDate.hour(hour).format('HH[h]00');
+        for (let hour = 24; hour > 0; hour--) {
+          const label = currentDate.clone().subtract(hour, 'hour').format('HH[h]');
           data.push({ label, quantity: 0 });
         }
         break;
 
       case 'week':
-        for (let day = 0; day < 7; day++) {
-          const label = currentDate.startOf('week').add(day, 'day').format('dddd');
+        for (let day = 7; day > 0; day--) {
+          const label = currentDate.clone().subtract(day, 'day').format('dddd (DD/MM)');
           data.push({ label, quantity: 0 });
         }
         break;
 
       case 'month':
-        const weeksInMonth = currentDate.endOf('month').week() - currentDate.startOf('month').week() + 1;
-        for (let week = 0; week < weeksInMonth; week++) {
-          const dropoffDate = currentDate.startOf('month').add(week, 'week');
+        const lastMonth = currentDate.clone().subtract(1, 'month');
+        const weeks = currentDate.clone().diff(lastMonth, 'weeks');
+        for (let week = 0; week <= weeks; week++) {
+          const dropoffDate = lastMonth.clone().add(week, 'week');
           const label = `du ${dropoffDate.startOf('week').format('DD/MM')} au ${dropoffDate.endOf('week').format('DD/MM')}`;
           data.push({ label, quantity: 0 });
         }
         break;
 
       case 'year':
-        for (let month = 0; month < 12; month++) {
-          const label = currentDate.month(month).format('MMMM');
+        for (let month = 12; month > 0; month--) {
+          const label = currentDate.clone().subtract(month, 'month').format('MM/YYYY');
           data.push({ label, quantity: 0 });
         }
         break;
 
       case 'all':
         for (let year = 5; year > 0; year--) {
-          const label = currentDate.subtract(year, 'year').format('YYYY');
+          const label = currentDate.clone().subtract(year, 'year').format('YYYY');
           data.push({ label, quantity: 0 });
         }
         break;
@@ -69,26 +70,27 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
     const data = createDataObjects(timeScope);
     deliveries?.forEach(delivery => {
       let dateKey: string;
+      if (delivery.dropoffDate === null) return;
       const dropoffDate = dayjs(delivery.dropoffDate);
 
       switch (timeScope) {
         case 'day':
-          dateKey = dropoffDate.format('HH[h]00');
+          dateKey = dropoffDate.format('HH[h]');
           break;
         case 'week':
-          dateKey = dropoffDate.format('dddd');
+          dateKey = dropoffDate.format('dddd (DD/MM)');
           break;
         case 'month':
           dateKey = `du ${dropoffDate.startOf('week').format('DD/MM')} au ${dropoffDate.endOf('week').format('DD/MM')}`;
           break;
         case 'year':
-          dateKey = dropoffDate.format('MMMM');
+          dateKey = dropoffDate.format('MM/YYYY');
           break;
         case 'all':
           dateKey = dropoffDate.format('YYYY');
           break;
         default:
-          dateKey = dropoffDate.format('YYYY-MM-DD');
+          dateKey = '';
       }
 
       const existingDataItem = data.find(item => item.label === dateKey);
@@ -124,8 +126,8 @@ export function DeliveriesChart({ deliveries, timeScope }: { deliveries: Deliver
             }}
             formatter={value => [t('deliveries', { count: +value }), null]}
           />
-          <XAxis dataKey="label" fontSize={12} tickLine={false} axisLine={false} />
-          <YAxis type="number" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+          <XAxis dataKey="label" fontSize={12} tickLine={false} axisLine={false} interval={1} tick={{ fill: 'white' }} />
+          <YAxis type="number" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} tick={{ fill: 'white' }} />
           <Bar dataKey="quantity" fill="hsl(142.1 70.6% 45.3%)" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
