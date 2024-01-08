@@ -58,7 +58,7 @@ export default function DeliveryDetails({ params }: { params: { id: string } }) 
   }, [lastJsonMessage]);
 
   // const fetchAddress = async (lon: number, lat: number) => {
-  //   const response = await fetcher(`https://nominatim.openstreetmap.org/reverse?lon=${lon}&lat=${lat}&format=json`);
+  //   const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lon=${lon}&lat=${lat}&format=json`);
   //   const data = await response.json();
   //   return `${data.address.house_number} ${data.address.road}, ${data.address.postcode} ${data.address.city}`;
   // };
