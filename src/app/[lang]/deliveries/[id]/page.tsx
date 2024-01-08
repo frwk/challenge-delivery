@@ -40,11 +40,11 @@ export default function DeliveryDetails({ params }: { params: { id: string } }) 
   );
   const { data: deliveryDropoffAddressData } = useSWR(
     data ? `https://api-adresse.data.gouv.fr/reverse/?lon=${data.dropoffLongitude}&lat=${data.dropoffLatitude}` : null,
-    (url: string) => fetcher(url).then(res => res.json()),
+    (url: string) => fetch(url).then(res => res.json()),
   );
   const { data: deliveryPickupAddressData } = useSWR(
     data ? `https://api-adresse.data.gouv.fr/reverse/?lon=${data.pickupLongitude}&lat=${data.pickupLatitude}` : null,
-    (url: string) => fetcher(url).then(res => res.json()),
+    (url: string) => fetch(url).then(res => res.json()),
   );
 
   const { lastJsonMessage } = useWebSocket(`${process.env.NEXT_PUBLIC_API_URL?.replace('http', 'ws')}/ws/delivery-tracking/${params.id}`);

@@ -28,11 +28,11 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
   );
   const { data: deliveryDropoffAddressData } = useSWR(
     data ? `https://api-adresse.data.gouv.fr/reverse/?lon=${data?.delivery?.dropoffLongitude}&lat=${data?.delivery?.dropoffLatitude}` : null,
-    (url: string) => fetcher(url).then(res => res.json()),
+    (url: string) => fetch(url).then(res => res.json()),
   );
   const { data: deliveryPickupAddressData } = useSWR(
     data ? `https://api-adresse.data.gouv.fr/reverse/?lon=${data?.delivery?.pickupLongitude}&lat=${data?.delivery?.pickupLatitude}` : null,
-    (url: string) => fetcher(url).then(res => res.json()),
+    (url: string) => fetch(url).then(res => res.json()),
   );
 
   const DELIVERIES_STATUSES_MAPPING: Record<DeliveriesStatusesEnum, string> = {

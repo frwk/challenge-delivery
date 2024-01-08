@@ -1,4 +1,4 @@
-function updateOptions(options: RequestInit) {
+function updateOptions(options: RequestInit, credentials: boolean = true) {
   const update = { ...options };
   update.credentials = 'include';
   return update;
