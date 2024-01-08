@@ -186,28 +186,34 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="space-y-1">
-                      {t('courierNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user?.firstName}</span>
+                      {t('courierNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier?.user?.firstName}</span>
                     </div>
                     <div className="space-y-1">
-                      {t('courierFirstNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user?.lastName}</span>
+                      {t('courierFirstNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier?.user?.lastName}</span>
                     </div>
                     <div className="space-y-1">
-                      {t('courierEmailLabel')} : <span className="font-bold">{complaintData?.delivery.courier.user.email}</span>
+                      {t('courierEmailLabel')} : <span className="font-bold">{complaintData?.delivery.courier?.user.email}</span>
                     </div>
                     <div className="space-y-1">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
-                            <Button
-                              variant="link"
-                              onClick={() => router.push(`/users/${complaintData?.delivery.courier.user.id}`)}
-                              className="pl-0"
-                              disabled={complaintData?.delivery.courier.user.deletedAt !== null}
-                            >
-                              {t('viewCourierButton')}
-                            </Button>
+                            {complaintData?.delivery.courier ? (
+                              <Button
+                                variant="link"
+                                onClick={() => router.push(`/couriers/${complaintData?.delivery.courier?.id}`)}
+                                className="pl-0"
+                                disabled={complaintData?.delivery.courier?.user.deletedAt !== null}
+                              >
+                                {t('viewCourierButton')}
+                              </Button>
+                            ) : (
+                              <Button variant="link" className="pl-0" disabled>
+                                {t('viewCourierButton')}
+                              </Button>
+                            )}
                           </TooltipTrigger>
-                          {complaintData?.delivery.courier.user.deletedAt !== null ? (
+                          {complaintData?.delivery.courier?.user.deletedAt !== null ? (
                             <TooltipContent>
                               <span className="text-gray-300">{t('deletedCourierMessage')}</span>
                             </TooltipContent>

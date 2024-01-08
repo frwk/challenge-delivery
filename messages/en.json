@@ -143,6 +143,7 @@
         "label": "Mark as Resolved"
       },
       "pendingStatus": "Pending",
+      "acceptedStatus": "Confirmed",
       "pickedUpStatus": "On the Way",
       "deliveredStatus": "Delivered",
       "cancelledStatus": "Cancelled",

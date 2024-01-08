@@ -143,6 +143,7 @@
         "label": "Marquer comme résolu"
       },
       "pendingStatus": "En attente",
+      "acceptedStatus": "Confirmée",
       "pickedUpStatus": "En cours de livraison",
       "deliveredStatus": "Livré",
       "cancelledStatus": "Annulée",
