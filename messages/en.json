@@ -159,7 +159,6 @@
       "pickupAddressLabel": "Pickup Address",
       "deliveryAddressLabel": "Delivery Address",
       "orderedOnLabel": "Ordered On",
-      "deliveredOnLabel": "Delivered On",
       "customerInfoTitle": "Customer Information",
       "customerInfoDescription": "Information about the customer who made the complaint.",
       "customerNameLabel": "Name",

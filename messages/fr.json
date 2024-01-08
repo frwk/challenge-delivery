@@ -159,7 +159,6 @@
       "pickupAddressLabel": "Adresse de récupération",
       "deliveryAddressLabel": "Adresse de livraison",
       "orderedOnLabel": "Commandé le",
-      "deliveredOnLabel": "Livré le",
       "customerInfoTitle": "Information du client",
       "customerInfoDescription": "Informations sur le client ayant fait la réclamation.",
       "customerNameLabel": "Nom",

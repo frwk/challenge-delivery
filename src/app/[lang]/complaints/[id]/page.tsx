@@ -122,18 +122,20 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                       </span>
                     </div>
                     <div className="space-y-1">
-                      {t('pickupAddressLabel')} : <span className="font-bold">{complaintData?.delivery && deliveryPickupAddress}</span>
+                      {t('pickupAddressLabel')} : <span className="font-bold">{complaintData?.delivery && deliveryPickupAddress}</span>{' '}
+                      {complaintData?.delivery?.pickupDate
+                        ? `(le ${dayjs(complaintData?.delivery?.pickupDate).format('DD MMMM YYYY à HH:mm')})`
+                        : '(non récupéré)'}
                     </div>
                     <div className="space-y-1">
-                      {t('deliveryAddressLabel')} : <span className="font-bold">{complaintData?.delivery && deliveryDropoffAddress}</span>
+                      {t('deliveryAddressLabel')} : <span className="font-bold">{complaintData?.delivery && deliveryDropoffAddress}</span>{' '}
+                      {complaintData?.delivery?.dropoffDate
+                        ? `(le ${dayjs(complaintData?.delivery?.dropoffDate).format('DD MMMM YYYY à HH:mm')})`
+                        : '(non livré)'}
                     </div>
                     <div className="space-y-1">
                       {t('orderedOnLabel')}{' '}
                       <span className="font-bold">{dayjs(complaintData?.delivery.createdAt).format('DD MMMM YYYY à HH:mm')}</span>
-                    </div>
-                    <div className="space-y-1">
-                      {t('deliveredOnLabel')}{' '}
-                      <span className="font-bold">{dayjs(complaintData?.delivery.dropoffDate).format('DD MMMM YYYY à HH:mm')}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -185,42 +187,44 @@ export default function ComplaintsDetails({ params }: { params: { id: string } }
                     <CardDescription>{t('courierInfoDescription')}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <div className="space-y-1">
-                      {t('courierNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier?.user?.firstName}</span>
-                    </div>
-                    <div className="space-y-1">
-                      {t('courierFirstNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier?.user?.lastName}</span>
-                    </div>
-                    <div className="space-y-1">
-                      {t('courierEmailLabel')} : <span className="font-bold">{complaintData?.delivery.courier?.user.email}</span>
-                    </div>
-                    <div className="space-y-1">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            {complaintData?.delivery.courier ? (
-                              <Button
-                                variant="link"
-                                onClick={() => router.push(`/couriers/${complaintData?.delivery.courier?.id}`)}
-                                className="pl-0"
-                                disabled={complaintData?.delivery.courier?.user.deletedAt !== null}
-                              >
-                                {t('viewCourierButton')}
-                              </Button>
-                            ) : (
-                              <Button variant="link" className="pl-0" disabled>
-                                {t('viewCourierButton')}
-                              </Button>
-                            )}
-                          </TooltipTrigger>
-                          {complaintData?.delivery.courier?.user.deletedAt !== null ? (
-                            <TooltipContent>
-                              <span className="text-gray-300">{t('deletedCourierMessage')}</span>
-                            </TooltipContent>
-                          ) : null}
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
+                    {complaintData?.delivery?.courier === null ? (
+                      <div className="space-y-1">
+                        {t('courierNameLabel')} : <span className="font-bold">{t('noCourierLabel')}</span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="space-y-1">
+                          {t('courierNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier?.user?.firstName}</span>
+                        </div>
+                        <div className="space-y-1">
+                          {t('courierFirstNameLabel')} : <span className="font-bold">{complaintData?.delivery.courier?.user?.lastName}</span>
+                        </div>
+                        <div className="space-y-1">
+                          {t('courierEmailLabel')} : <span className="font-bold">{complaintData?.delivery.courier?.user.email}</span>
+                        </div>
+                        <div className="space-y-1">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Button
+                                  variant="link"
+                                  onClick={() => router.push(`/couriers/${complaintData?.delivery.courier?.id}`)}
+                                  className="pl-0"
+                                  disabled={complaintData?.delivery.courier?.user.deletedAt !== null}
+                                >
+                                  {t('viewCourierButton')}
+                                </Button>
+                              </TooltipTrigger>
+                              {complaintData?.delivery.courier?.user.deletedAt !== null ? (
+                                <TooltipContent>
+                                  <span className="text-gray-300">{t('deletedCourierMessage')}</span>
+                                </TooltipContent>
+                              ) : null}
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                      </>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
