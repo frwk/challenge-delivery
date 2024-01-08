@@ -10,7 +10,9 @@ import { Actions } from './actions';
 export type Complaint = {
   id: string;
   status: string;
+  courierId: number;
   courierFullName: string;
+  userId: number;
   userFullName: string;
   deliveryDate: string;
   complaintDate: string;
@@ -39,10 +41,17 @@ export const columns: ColumnDef<Complaint>[] = [
   {
     accessorKey: 'courierFullName',
     header: 'Livreur',
+    cell: ({ row }) => {
+      if (!row.original.courierId) return 'Aucun livreur affecté';
+      return <a href={`/users/${row.original.courierId}`}>{row.getValue('courierFullName')}</a>;
+    },
   },
   {
     accessorKey: 'userFullName',
     header: 'Client',
+    cell: ({ row }) => {
+      return <a href={`/users/${row.original.userId}`}>{row.getValue('userFullName')}</a>;
+    },
   },
   {
     accessorKey: 'deliveryDate',

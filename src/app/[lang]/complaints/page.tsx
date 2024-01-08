@@ -18,7 +18,9 @@ export default function Complaints() {
         return {
           id: complaint.id,
           status: complaint.status,
+          courierId: complaint.delivery.courier?.user.id ?? null,
           courierFullName: `${complaint.delivery.courier?.user?.firstName} ${complaint.delivery.courier?.user?.lastName}`,
+          userId: complaint.user.id,
           userFullName: `${complaint.user?.firstName} ${complaint.user?.lastName}`,
           deliveryDate: complaint.delivery.createdAt,
           complaintDate: complaint.createdAt,
